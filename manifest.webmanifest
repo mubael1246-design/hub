@@ -1,0 +1,15 @@
+{
+  "name": "Ouroboros · 오빠의 허브",
+  "short_name": "Ouroboros",
+  "description": "오빠의 페이지 허브",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0a0c12",
+  "theme_color": "#0a0c12",
+  "lang": "ko",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png"}
+  ]
+}

@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0a0c12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ouroboros">
+<title>Ouroboros · 오빠의 허브</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0c12; --panel:rgba(18,22,32,.72); --ink:#C8CDD8; --mute:#8a90a0;
+  --gold:#E8D6AA; --lilac:#B8A4C9; --line:rgba(232,214,170,.28);
+  --nia:#c9bdd8; --mina:#e8737f; --cora:#3fcfc4;
+  --ok:#7dcea0; --bad:#d98989; --unk:#6b7280;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:'Gowun Batang',serif;-webkit-font-smoothing:antialiased}
+body{background:
+  radial-gradient(900px 500px at 50% -10%,rgba(184,164,201,.10),transparent 60%),
+  radial-gradient(700px 400px at 90% 110%,rgba(232,214,170,.05),transparent 55%),
+  var(--bg)}
+
+/* lock-screen CSS vines only — never the art */
+.vine{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.45}
+.vine path{fill:none;stroke:var(--lilac);stroke-width:1;opacity:.55}
+.vine .leaf{fill:var(--lilac);opacity:.7}
+.vine .ink{stroke:rgba(200,205,216,.35)}
+
+#gate{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:24px;position:relative;z-index:1}
+.ring{width:150px;height:150px}
+.ring .rot{transform-origin:100px 100px;animation:spin 70s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+h1.title{font-family:'Cinzel',serif;font-weight:700;letter-spacing:.22em;margin:0;font-size:26px;color:var(--ink);text-shadow:0 0 18px rgba(184,164,201,.25)}
+h1.title .alch{font-family:'Gowun Batang',serif;letter-spacing:0;margin-left:8px;color:var(--lilac);font-size:.85em;font-weight:400}
+.morse{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:2.4px;color:var(--gold);opacity:.7;margin-top:-4px}
+.sub{color:var(--mute);font-size:14px}
+form{display:flex;gap:8px;margin-top:6px}
+input[type=password]{background:rgba(14,16,24,.85);border:1px solid var(--line);color:var(--ink);padding:12px 14px;border-radius:14px;font-size:16px;width:200px;font-family:inherit;text-align:center;letter-spacing:.2em}
+input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(232,214,170,.12)}
+button.go{background:transparent;color:var(--gold);border:1px solid var(--line);border-radius:14px;padding:12px 18px;font-family:inherit;font-weight:700;font-size:15px;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+button.go:hover{border-color:var(--gold);background:rgba(232,214,170,.08);color:#f3e6c4}
+.err{color:#d98989;font-size:13px;min-height:1em}
+.shake{animation:shake .4s}@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+
+/* app — art as faint inverted background */
+#app{display:none;position:relative;z-index:1;min-height:100vh}
+.art-layer{position:fixed;inset:0;z-index:0;pointer-events:none;background-position:center;background-size:cover;background-repeat:no-repeat;
+  filter:invert(1) hue-rotate(250deg) saturate(1.15) brightness(.95);
+  opacity:.16}
+.art-vignette{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 35%,rgba(10,12,18,.55) 75%,rgba(10,12,18,.92) 100%)}
+main{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:22px 16px 72px}
+
+header{text-align:center;margin:8px 0 18px}
+header .band{position:relative;height:88px;border-radius:18px;overflow:hidden;border:1px solid var(--line);margin-bottom:16px;
+  background-color:rgba(14,16,24,.4);background-size:cover;background-position:center;
+  filter:none}
+header .band::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,12,18,.15),rgba(10,12,18,.72));
+  /* invert only the bg image via blend: we set art as separate layer inside */
+}
+header .band-art{position:absolute;inset:0;background-size:cover;background-position:center;
+  filter:invert(1) hue-rotate(250deg) saturate(1.2) brightness(1);
+  opacity:.38}
+header .band-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,18,.25),rgba(10,12,18,.7))}
+header .band-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;
+  font-family:'Cinzel',serif;letter-spacing:.28em;font-size:13px;color:var(--gold);opacity:.9}
+
+.summary{display:flex;align-items:center;justify-content:center;gap:10px;padding:12px 16px;border-radius:16px;
+  background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);margin-bottom:18px;font-size:14px}
+.summary .dot{width:9px;height:9px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c);flex:none}
+.dots{display:flex;gap:5px;justify-content:center;margin:4px 0 16px}
+.dots i{width:4px;height:4px;border-radius:50%;background:var(--lilac);opacity:.55;display:block}
+
+.card{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px 16px 14px;margin:0 0 12px;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-left:2.5px solid color-mix(in srgb,var(--c,var(--lilac)) 55%,transparent);
+  transition:border-color .2s,background .2s}
+.card:hover{border-color:color-mix(in srgb,var(--gold) 70%,var(--line));background:rgba(22,26,38,.78)}
+.card .leaf{position:absolute;top:14px;left:12px;width:10px;height:6px;border-radius:50%;
+  background:var(--lilac);opacity:.75;transform:rotate(-30deg);box-shadow:0 0 6px rgba(184,164,201,.35)}
+.card .top{display:flex;align-items:flex-start;gap:10px;padding-left:14px}
+.card h2{margin:0;font-size:17px;font-weight:700;color:var(--ink);line-height:1.35;flex:1}
+.card h2 a{color:inherit;text-decoration:none;border-bottom:1px dotted transparent;transition:color .2s,border-color .2s}
+.card h2 a:hover{color:#e8ecf4;border-bottom-color:var(--gold)}
+.live{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--mute);flex:none;margin-top:3px}
+.live .led{width:8px;height:8px;border-radius:50%;background:var(--s,var(--unk));box-shadow:0 0 7px var(--s,var(--unk))}
+.desc{margin:8px 0 0;padding-left:14px;font-size:13.5px;color:var(--mute);line-height:1.55}
+.meta{display:flex;flex-wrap:wrap;gap:6px 10px;margin-top:12px;padding-left:14px;align-items:center;font-size:12px;color:var(--mute)}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);background:rgba(10,12,18,.35)}
+.chip .sw{width:7px;height:7px;border-radius:50%;background:var(--c);opacity:.85}
+.lock-chip{color:var(--gold)}
+.meta a{color:var(--mute);text-decoration:none;border-bottom:1px dotted var(--line);transition:color .2s}
+.meta a:hover{color:var(--gold)}
+.updated{font-variant-numeric:tabular-nums}
+
+footer{text-align:center;color:var(--mute);font-size:12px;margin-top:28px;opacity:.85}
+footer .sig{color:var(--lilac);margin:0 4px}
+.lock{background:none;border:1px solid var(--line);color:var(--mute);padding:7px 14px;border-radius:999px;font-size:12px;margin-top:12px;cursor:pointer;font-family:inherit;font-weight:400;transition:color .2s,border-color .2s}
+.lock:hover{color:var(--gold);border-color:var(--gold)}
+</style>
+</head>
+<body>
+
+<svg class="vine" viewBox="0 0 400 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <path class="ink" d="M40 0 C80 80 10 160 55 240 S90 400 35 500 S70 680 40 900"/>
+  <path d="M40 0 C80 80 10 160 55 240 S90 400 35 500 S70 680 40 900"/>
+  <path class="ink" d="M360 0 C320 90 390 170 345 260 S310 420 365 530 S330 720 360 900"/>
+  <path d="M360 0 C320 90 390 170 345 260 S310 420 365 530 S330 720 360 900"/>
+  <g class="leaf"><ellipse cx="62" cy="110" rx="7" ry="3.5" transform="rotate(-35 62 110)"/><ellipse cx="28" cy="230" rx="7" ry="3.5" transform="rotate(30 28 230)"/><ellipse cx="68" cy="370" rx="7" ry="3.5" transform="rotate(-25 68 370)"/><ellipse cx="30" cy="540" rx="7" ry="3.5" transform="rotate(40 30 540)"/><ellipse cx="60" cy="700" rx="7" ry="3.5" transform="rotate(-30 60 700)"/><ellipse cx="338" cy="140" rx="7" ry="3.5" transform="rotate(35 338 140)"/><ellipse cx="372" cy="300" rx="7" ry="3.5" transform="rotate(-30 372 300)"/><ellipse cx="340" cy="480" rx="7" ry="3.5" transform="rotate(25 340 480)"/><ellipse cx="370" cy="650" rx="7" ry="3.5" transform="rotate(-40 370 650)"/></g>
+</svg>
+
+<section id="gate">
+  <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
+    <g class="rot">
+      <circle cx="100" cy="100" r="60" fill="none" stroke="#C8CDD8" stroke-width="2.4" stroke-dasharray="355 22" stroke-linecap="round"/>
+      <circle cx="100" cy="100" r="60" fill="none" stroke="#B8A4C9" stroke-width="1" stroke-dasharray="4 10" opacity=".7"/>
+      <path d="M100 40 l9 -5 l-2 9 z" fill="#E8D6AA"/>
+      <g fill="#B8A4C9" opacity=".9"><ellipse cx="150" cy="70" rx="6" ry="2.8" transform="rotate(50 150 70)"/><ellipse cx="155" cy="120" rx="6" ry="2.8" transform="rotate(110 155 120)"/><ellipse cx="120" cy="155" rx="6" ry="2.8" transform="rotate(160 120 155)"/><ellipse cx="70" cy="152" rx="6" ry="2.8" transform="rotate(20 70 152)"/><ellipse cx="45" cy="105" rx="6" ry="2.8" transform="rotate(80 45 105)"/><ellipse cx="60" cy="60" rx="6" ry="2.8" transform="rotate(-40 60 60)"/></g>
+      <ellipse cx="135" cy="48" rx="5" ry="2.4" transform="rotate(10 135 48)" fill="#C8CDD8"/>
+    </g>
+    <circle cx="100" cy="100" r="3.5" fill="#E8D6AA"/>
+  </svg>
+  <h1 class="title">OUROBOROS<span class="alch">🜸</span></h1>
+  <div class="morse">--- ..- .-. --- -... --- .-. --- ...</div>
+  <div class="sub">오빠의 허브</div>
+  <form id="f"><input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password" autofocus><button class="go" type="submit">열기</button></form>
+  <div class="err" id="err"></div>
+</section>
+
+<div id="app">
+  <div class="art-layer" id="artBg"></div>
+  <div class="art-vignette"></div>
+  <main>
+    <header>
+      <div class="band"><div class="band-art" id="artBand"></div><div class="band-veil"></div><div class="band-label">TREEOBOROS</div></div>
+      <h1 class="title">OUROBOROS<span class="alch">🜸</span></h1>
+      <div class="morse">--- ..- .-. --- -... --- .-. --- ...</div>
+      <div class="sub" id="sub"></div>
+    </header>
+    <div class="summary" id="sum"><span class="dot" style="--c:var(--unk)"></span><span>확인 중…</span></div>
+    <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div id="list"></div>
+    <footer>끝은 다시 시작으로<span class="sig">🜸</span><br><button class="lock" id="lock" type="button">잠그기</button></footer>
+  </main>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function decrypt(pw,file='data.enc.json'){
+  const e=await (await fetch(file+'?t='+Date.now(),{cache:'no-store'})).json();
+  const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(e.salt),iterations:e.iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv)},key,b64(e.ct));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+const KST=9*3600e3, pad=n=>String(n).padStart(2,'0');
+function fmtKST(iso){
+  if(!iso) return '—';
+  const d=new Date(new Date(iso).getTime()+KST);
+  return `${d.getUTCFullYear()}.${pad(d.getUTCMonth()+1)}.${pad(d.getUTCDate())} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())} KST`;
+}
+let D=null, statuses={};
+
+async function probe(url){
+  // try CORS GET/HEAD first; fall back to no-cors (opaque = reachable)
+  try{
+    const r=await fetch(url,{method:'HEAD',mode:'cors',cache:'no-store',signal:AbortSignal.timeout(8000)});
+    return r.ok||(r.status>=200&&r.status<500);
+  }catch(_){}
+  try{
+    const r=await fetch(url,{method:'GET',mode:'cors',cache:'no-store',signal:AbortSignal.timeout(8000)});
+    return r.ok||(r.status>=200&&r.status<500);
+  }catch(_){}
+  try{
+    await fetch(url,{method:'GET',mode:'no-cors',cache:'no-store',signal:AbortSignal.timeout(8000)});
+    return true; // opaque response reached the host
+  }catch(_){ return false }
+}
+async function lastCommit(repo, path){
+  try{
+    let u=`https://api.github.com/repos/${repo}/commits?per_page=1`;
+    if(path) u+=`&path=${encodeURIComponent(path)}`;
+    const r=await fetch(u,{headers:{'Accept':'application/vnd.github+json'},signal:AbortSignal.timeout(8000)});
+    if(!r.ok) return null;
+    const j=await r.json();
+    return j[0]?.commit?.committer?.date || j[0]?.commit?.author?.date || null;
+  }catch(_){ return null }
+}
+
+function renderCards(){
+  const makers=D.makers||{};
+  $('#list').innerHTML=D.pages.map(p=>{
+    const m=makers[p.maker]||{ko:p.maker,color:'var(--lilac)'};
+    const st=statuses[p.id]||{};
+    const live=st.live; const led=live===true?'var(--ok)':live===false?'var(--bad)':'var(--unk)';
+    const liveT=live===true?'접속됨':live===false?'응답 없음':'확인 중';
+    return `<article class="card" style="--c:${m.color}">
+      <span class="leaf" aria-hidden="true"></span>
+      <div class="top"><h2><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.name)}</a></h2>
+        <div class="live" title="${liveT}"><span class="led" style="--s:${led}"></span>${liveT}</div></div>
+      <p class="desc">${esc(p.desc)}</p>
+      <div class="meta">
+        <span class="chip" style="--c:${m.color}"><span class="sw"></span>${esc(m.ko)} · ${esc(m.en||'')}</span>
+        ${p.locked?'<span class="chip lock-chip">잠금</span>':'<span class="chip">공개</span>'}
+        <span class="updated">${st.updated?('갱신 '+fmtKST(st.updated)):'갱신 —'}</span>
+        <a href="https://github.com/${esc(p.repo)}" target="_blank" rel="noopener">repo</a>
+      </div>
+    </article>`;
+  }).join('');
+  const known=Object.values(statuses).filter(s=>s.live===true||s.live===false);
+  const bad=known.filter(s=>s.live===false).length;
+  const allDone=known.length===D.pages.length;
+  const sum=$('#sum');
+  if(!allDone){sum.innerHTML=`<span class="dot" style="--c:var(--unk)"></span><span>페이지 상태 확인 중…</span>`;return}
+  if(bad===0) sum.innerHTML=`<span class="dot" style="--c:var(--ok)"></span><span>모두 괜찮아 · ${D.pages.length}개 페이지</span>`;
+  else sum.innerHTML=`<span class="dot" style="--c:var(--bad)"></span><span>${bad}개 문제 · ${D.pages.length-bad}개 정상</span>`;
+}
+
+async function enrich(){
+  renderCards();
+  await Promise.all(D.pages.map(async p=>{
+    const [live, updated]=await Promise.all([probe(p.url), lastCommit(p.repo, p.path)]);
+    statuses[p.id]={live, updated};
+    renderCards();
+  }));
+}
+
+function showApp(){
+  $('.vine').style.display='none';
+  $('#gate').style.display='none';
+  $('#app').style.display='block';
+  $('#sub').textContent=D.subtitle||D.title||'';
+  if(D.art){
+    $('#artBg').style.backgroundImage=`url(${D.art})`;
+    $('#artBand').style.backgroundImage=`url(${D.art})`;
+  }
+  enrich();
+}
+
+$('#f').onsubmit=async e=>{
+  e.preventDefault();$('#err').textContent='여는 중…';
+  const pv=$('#pw').value.trim().toLowerCase();
+  try{
+    D=await decrypt(pv);
+    try{sessionStorage.setItem('hub-pw',pv)}catch(_){}
+    showApp();
+  }catch(x){$('#err').textContent='비밀번호가 달라.';$('#f').classList.remove('shake');void $('#f').offsetWidth;$('#f').classList.add('shake')}
+};
+(async()=>{try{const p=sessionStorage.getItem('hub-pw');if(p){$('#pw').value=p;$('#f').requestSubmit()}}catch(e){}})();
+$('#lock').onclick=()=>{try{sessionStorage.removeItem('hub-pw')}catch(_){}location.reload()};
+</script>
+</body>
+</html>
