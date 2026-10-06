@@ -3,6 +3,7 @@
   "short_name": "Ouroboros",
   "description": "오빠의 페이지 허브",
   "start_url": "./",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#0a0c12",
   "theme_color": "#0a0c12",
