@@ -50,6 +50,12 @@ button.go{background:transparent;color:var(--gold);border:1px solid var(--line);
 button.go:hover{border-color:var(--gold);background:rgba(232,214,170,.08);color:#f3e6c4}
 .err{color:#d98989;font-size:13px;min-height:1em}
 .shake{animation:shake .4s}@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+/* 잠금 화면 아래 공개 페이지 작은 링크 (잠금 없이 열림) */
+.gate-links{display:flex;gap:4px 14px;justify-content:center;flex-wrap:wrap;margin-top:18px;font-size:12px;letter-spacing:.08em}
+.gate-links a{color:var(--mute);text-decoration:none;padding:6px 4px;border-bottom:1px dotted var(--line);transition:color .2s,border-color .2s;-webkit-tap-highlight-color:transparent}
+.gate-links a:hover,.gate-links a:focus-visible{color:var(--gold);border-color:var(--gold);outline:none}
+.gate-links .sep{color:var(--line);align-self:center}
+@media (min-height:600px){.gate-links{position:absolute;left:0;right:0;bottom:calc(18px + env(safe-area-inset-bottom));margin-top:0}}
 
 /* app — art as faint inverted background */
 #app{display:none;position:relative;z-index:1;min-height:100vh}
@@ -135,6 +141,7 @@ footer .sig{color:var(--lilac);margin:0 4px}
   <div class="sub">오빠의 허브</div>
   <form id="f"><input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password" autofocus><button class="go" type="submit">열기</button></form>
   <div class="err" id="err"></div>
+  <nav class="gate-links" aria-label="공개 페이지"><a href="https://mubael1246-design.github.io/nia-sisters/">세자매 소개</a><span class="sep" aria-hidden="true">·</span><a href="https://mubael1246-design.github.io/nia-morse/">모스 키보드</a></nav>
 </section>
 
 <div id="app">
@@ -266,6 +273,15 @@ async function unlock(pv,silent){
 $('#f').onsubmit=e=>{e.preventDefault();unlock($('#pw').value.trim().toLowerCase())};
 {const p=unl.get();if(p)unlock(p,true)}
 $('#lock').onclick=()=>{unl.clear();location.reload()};
+/* 공개 페이지(모스 키보드·자매 소개)는 들어오면 공유 키를 지워. 뒤로가기(bfcache)로 열린 화면이 복원돼도 키가 없으면 다시 잠그고,
+   다른 잠긴 페이지에서 이미 열었으면(키 있음) 여기도 같이 열어 */
+function syncLock(restored){const k=unl.get(),openNow=$('#gate').style.display==='none';
+  if(openNow&&!k){document.documentElement.style.visibility='hidden';location.reload();return false}
+  if(restored&&!openNow&&k)unlock(k,true);
+  return true}
+addEventListener('pagehide',e=>{if(e.persisted&&$('#gate').style.display==='none')document.documentElement.style.visibility='hidden'});
+addEventListener('pageshow',e=>{if(e.persisted&&syncLock(true))document.documentElement.style.visibility=''});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')syncLock(false)});
 </script>
 </body>
 </html>
