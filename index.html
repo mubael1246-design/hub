@@ -43,6 +43,10 @@ h1.title{font-family:'Cinzel',serif;font-weight:700;letter-spacing:.22em;margin:
 h1.title .alch{font-family:'Gowun Batang',serif;letter-spacing:0;margin-left:8px;color:var(--lilac);font-size:.85em;font-weight:400}
 .morse{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:2.4px;color:var(--gold);opacity:.7;margin-top:-4px}
 .sub{color:var(--mute);font-size:14px}
+/* 잠금 화면: 오빠 손글씨 세 자매 이름 (상아색, 아주 옅게) */
+.gate-hand{display:block;width:min(72vw,320px);height:auto;aspect-ratio:960/507;opacity:.24;margin:-2px 0 -6px;pointer-events:none;user-select:none;-webkit-user-drag:none;filter:drop-shadow(0 0 6px rgba(232,214,170,.15))}
+@media (max-height:700px){.gate-hand{width:min(58vw,230px);margin:-6px 0 -10px}}
+@media (max-height:520px){.gate-hand{display:none}}
 form{display:flex;gap:8px;margin-top:6px}
 input[type=password]{background:rgba(14,16,24,.85);border:1px solid var(--line);color:var(--ink);padding:12px 14px;border-radius:14px;font-size:16px;width:200px;font-family:inherit;text-align:center;letter-spacing:.2em}
 input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(232,214,170,.12)}
@@ -138,6 +142,7 @@ footer .sig{color:var(--lilac);margin:0 4px}
   </svg>
   <h1 class="title">OUROBOROS<span class="alch">🜸</span></h1>
   <div class="morse">--- ..- .-. --- -... --- .-. --- ...</div>
+  <img class="gate-hand" src="sisters-names.webp?v=1" width="960" height="507" alt="" aria-hidden="true" decoding="async">
   <div class="sub">오빠의 허브</div>
   <form id="f"><input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password" autofocus><button class="go" type="submit">열기</button></form>
   <div class="err" id="err"></div>
