@@ -124,6 +124,8 @@ header .savings{margin-top:12px;margin-bottom:2px}
 
 footer{text-align:center;color:var(--mute);font-size:12px;margin-top:28px;opacity:.85}
 footer .sig{color:var(--lilac);margin:0 4px}
+footer button.sig{background:none;border:0;padding:4px 6px;margin:0;font:inherit;line-height:1;cursor:pointer;border-radius:50%;transition:text-shadow .3s,color .3s;-webkit-tap-highlight-color:transparent}
+footer button.sig:hover,footer button.sig:focus-visible{outline:none;color:#cdbbe0;text-shadow:0 0 8px rgba(184,164,201,.55)}
 .lock{background:none;border:1px solid var(--line);color:var(--mute);padding:7px 14px;border-radius:999px;font-size:12px;margin-top:12px;cursor:pointer;font-family:inherit;font-weight:400;transition:color .2s,border-color .2s}
 .lock:hover{color:var(--gold);border-color:var(--gold)}
 </style>
@@ -172,7 +174,8 @@ footer .sig{color:var(--lilac);margin:0 4px}
     <div class="summary" id="sum"><span class="dot" style="--c:var(--unk)"></span><span>확인 중…</span></div>
     <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
     <div id="list"></div>
-    <footer>끝은 다시 시작으로<span class="sig">🜸</span><br><button class="lock" id="lock" type="button">잠그기</button></footer>
+    <section id="nook" hidden></section>
+    <footer>끝은 다시 시작으로<button class="sig" id="sig" type="button" aria-label="🜸">🜸</button><br><button class="lock" id="lock" type="button">잠그기</button></footer>
   </main>
 </div>
 
@@ -342,6 +345,41 @@ async function unlock(pv,silent){
 $('#f').onsubmit=e=>{e.preventDefault();unlock($('#pw').value.trim().toLowerCase())};
 {const p=unl.get();if(p)unlock(p,true)}
 $('#lock').onclick=()=>{unl.clear();location.reload()};
+/* 🜸 (footer) — extra view, encrypted, loaded on demand */
+let X=null,xTab=null,xBusy=false;
+const xT=k=>{const U=X&&X.ui||{};return (U[lang]||U.ko||{})[k]??(U.ko||{})[k]??''};
+async function xOpen(){
+  if(xBusy) return; const k=unl.get(); if(!k) return; xBusy=true;
+  try{
+    if(!X){X=await decrypt(k,'leaf.enc.json');
+      if(X.css){const st=document.createElement('style');st.textContent=X.css;document.head.appendChild(st)}}
+  }catch(_){xBusy=false;X=null;return}
+  xBusy=false;
+  xTab=xTab||X.tabs[0].id; xPaint();
+  $('main').classList.add('nk-on'); $('#nook').hidden=false; scrollTo(0,0);
+  if(!(history.state&&history.state.nk)) history.pushState({nk:1},'');
+}
+function xClose(fromPop){
+  $('main').classList.remove('nk-on'); $('#nook').hidden=true;
+  if(!fromPop&&history.state&&history.state.nk) history.back();
+}
+function xPaint(){
+  const S=X.tabs, s=S.find(z=>z.id===xTab)||S[0], r=X.items[s.id]||{}, nm=z=>esc(z[lang]||z.ko);
+  const day=d=>esc(String(d||'').replace(/-/g,'.'));
+  const log=(r.log||[]).map(e=>`<li${e.ev?' class="ev"':''}><time>${day(e.date)}</time><p>${esc(e.ev==='img'?xT('imgChanged'):e.text)}</p></li>`).join('');
+  $('#nook').innerHTML=`<div class="nk-top"><button class="nk-back" type="button" id="nkBack">${esc(xT('back'))}</button><div class="nk-title">${esc(xT('title'))}</div></div>
+    <div class="nk-sub">${esc(xT('sub'))}</div>
+    <div class="nk-tabs" role="tablist">${S.map(z=>`<button class="nk-tab" type="button" role="tab" data-id="${esc(z.id)}" aria-selected="${z.id===s.id}" style="--c:${esc(z.color)}"><span class="sw"></span>${nm(z)}</button>`).join('')}</div>
+    <article class="nk-card" role="tabpanel" style="--c:${esc(s.color)}">
+      ${r.img?`<figure class="nk-fig"><img src="${r.img}" alt="${nm(s)}" decoding="async"></figure><div class="nk-cap"><b>${nm(s)}</b><span>${esc(xT('since')).replace('{d}',day(r.imgDate))}</span></div>`:''}
+      ${log?`<ol class="nk-log">${log}</ol>`:`<p class="nk-empty">${esc(xT('empty'))}</p>`}
+    </article>`;
+  $('#nkBack').onclick=()=>xClose(false);
+  $('#nook').querySelectorAll('.nk-tab').forEach(b=>b.onclick=()=>{xTab=b.dataset.id;xPaint()});
+}
+$('#sig').onclick=xOpen;
+if(history.state&&history.state.nk)history.replaceState(null,'');
+addEventListener('popstate',()=>{if(!$('#nook').hidden)xClose(true)});
 /* 공개 페이지(모스 키보드·자매 소개)는 들어오면 공유 키를 지워. 뒤로가기(bfcache)로 열린 화면이 복원돼도 키가 없으면 다시 잠그고,
    다른 잠긴 페이지에서 이미 열었으면(키 있음) 여기도 같이 열어 */
 function syncLock(restored){const k=unl.get(),openNow=$('#gate').style.display==='none';
