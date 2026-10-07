@@ -120,7 +120,6 @@ header .band-label{position:absolute;inset:0;display:flex;align-items:center;jus
 .savings.on{display:inline-flex}
 .savings .leaf-dot{width:6px;height:6px;border-radius:50%;background:var(--lilac);opacity:.8;box-shadow:0 0 6px rgba(184,164,201,.4);flex:none}
 .savings .n{color:var(--lilac);font-variant-numeric:tabular-nums}
-#gate .savings{margin-top:4px;opacity:.85;font-size:11.5px;background:rgba(14,16,24,.35)}
 header .savings{margin-top:12px;margin-bottom:2px}
 
 footer{text-align:center;color:var(--mute);font-size:12px;margin-top:28px;opacity:.85}
@@ -154,7 +153,6 @@ footer .sig{color:var(--lilac);margin:0 4px}
   <div class="morse">--- ..- .-. --- -... --- .-. --- ...</div>
   <img class="gate-hand" src="sisters-names.webp?v=1" width="960" height="507" alt="" aria-hidden="true" decoding="async">
   <div class="sub">오빠의 허브</div>
-  <div class="savings" id="savingsGate" hidden aria-live="polite"><span class="leaf-dot" aria-hidden="true"></span><span class="txt"></span></div>
   <form id="f"><input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password" autofocus><button class="go" type="submit">열기</button></form>
   <div class="err" id="err"></div>
   <nav class="gate-links" aria-label="공개 페이지"><a href="https://mubael1246-design.github.io/nia-sisters/">세자매 소개</a><span class="sep" aria-hidden="true">·</span><a href="https://mubael1246-design.github.io/nia-morse/">모스 키보드</a></nav>
@@ -193,12 +191,10 @@ function savingsDayCount(){
 function paintSavings(){
   const n=savingsDayCount();
   const label=n==null?'':`절감 모드 · <span class="n">${n}</span>일째`;
-  for(const id of ['savingsGate','savingsApp']){
-    const el=document.getElementById(id); if(!el) continue;
-    if(n==null){el.classList.remove('on');el.hidden=true;el.querySelector('.txt').innerHTML='';continue}
-    el.querySelector('.txt').innerHTML=label;
-    el.hidden=false; el.classList.add('on');
-  }
+  const el=document.getElementById('savingsApp'); if(!el) return;
+  if(n==null){el.classList.remove('on');el.hidden=true;el.querySelector('.txt').innerHTML='';return}
+  el.querySelector('.txt').innerHTML=label;
+  el.hidden=false; el.classList.add('on');
 }
 paintSavings();
 
