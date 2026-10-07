@@ -152,10 +152,10 @@ footer .sig{color:var(--lilac);margin:0 4px}
   <h1 class="title">OUROBOROS<span class="alch">🜸</span></h1>
   <div class="morse">--- ..- .-. --- -... --- .-. --- ...</div>
   <img class="gate-hand" src="sisters-names.webp?v=1" width="960" height="507" alt="" aria-hidden="true" decoding="async">
-  <div class="sub">오빠의 허브</div>
-  <form id="f"><input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password" autofocus><button class="go" type="submit">열기</button></form>
+  <div class="sub" data-i18n="gateSub">오빠의 허브</div>
+  <form id="f"><input id="pw" type="password" placeholder="비밀번호" data-i18n-ph="pwPh" autocomplete="current-password" autofocus><button class="go" type="submit" data-i18n="openBtn">열기</button></form>
   <div class="err" id="err"></div>
-  <nav class="gate-links" aria-label="공개 페이지"><a href="https://mubael1246-design.github.io/nia-sisters/">세자매 소개</a><span class="sep" aria-hidden="true">·</span><a href="https://mubael1246-design.github.io/nia-morse/">모스 키보드</a></nav>
+  <nav class="gate-links" aria-label="공개 페이지" data-i18n-aria="gateLinksAria"><a href="https://mubael1246-design.github.io/nia-sisters/" data-i18n="sisters">세자매 소개</a><span class="sep" aria-hidden="true">·</span><a href="https://mubael1246-design.github.io/nia-morse/" data-i18n="morse">모스 키보드</a></nav>
 </section>
 
 <div id="app">
@@ -197,6 +197,39 @@ function paintSavings(){
   el.hidden=false; el.classList.add('on');
 }
 paintSavings();
+
+/* 잠금 화면 이중언어 준비 (기본 ko). 토글 버튼은 세 페이지 준비되면 추가 */
+const LANG={
+  ko:{
+    gateSub:'오빠의 허브',
+    pwPh:'비밀번호',
+    openBtn:'열기',
+    opening:'여는 중…',
+    wrongPw:'비밀번호가 달라.',
+    sisters:'세자매 소개',
+    morse:'모스 키보드',
+    gateLinksAria:'공개 페이지'
+  },
+  en:{
+    gateSub:"Oppa’s Hub",
+    pwPh:'Password',
+    openBtn:'Open',
+    opening:'Opening…',
+    wrongPw:'Wrong password.',
+    sisters:'Three Sisters',
+    morse:'Morse Keyboard',
+    gateLinksAria:'Public pages'
+  }
+};
+let lang='ko';
+function t(k){const L=LANG[lang]||LANG.ko; return L[k]??LANG.ko[k]??k}
+function paintGateLang(){
+  const L=LANG[lang]||LANG.ko;
+  document.querySelectorAll('#gate [data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n'); if(k in L) el.textContent=L[k]});
+  document.querySelectorAll('#gate [data-i18n-ph]').forEach(el=>{const k=el.getAttribute('data-i18n-ph'); if(k in L) el.placeholder=L[k]});
+  document.querySelectorAll('#gate [data-i18n-aria]').forEach(el=>{const k=el.getAttribute('data-i18n-aria'); if(k in L) el.setAttribute('aria-label',L[k])});
+}
+paintGateLang();
 
 const $=s=>document.querySelector(s);
 const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
@@ -296,7 +329,7 @@ const UK='ouroboros-unlock',OLDK=['hub-pw','gecko-pw','ob'];/* 허브·편지함
 const unl={get(){try{return sessionStorage.getItem(UK)}catch(_){return null}},set(v){try{sessionStorage.setItem(UK,v)}catch(_){}},clear(){try{sessionStorage.removeItem(UK)}catch(_){}}};
 try{OLDK.forEach(k=>sessionStorage.removeItem(k))}catch(_){}
 async function unlock(pv,silent){
-  $('#err').textContent='여는 중…';
+  $('#err').textContent=t('opening');
   try{
     D=await decrypt(pv);
     unl.set(pv);
@@ -304,7 +337,7 @@ async function unlock(pv,silent){
     showApp();
   }catch(x){
     if(silent){unl.clear();$('#err').textContent='';return}
-    $('#err').textContent='비밀번호가 달라.';$('#f').classList.remove('shake');void $('#f').offsetWidth;$('#f').classList.add('shake')}
+    $('#err').textContent=t('wrongPw');$('#f').classList.remove('shake');void $('#f').offsetWidth;$('#f').classList.add('shake')}
 }
 $('#f').onsubmit=e=>{e.preventDefault();unlock($('#pw').value.trim().toLowerCase())};
 {const p=unl.get();if(p)unlock(p,true)}
