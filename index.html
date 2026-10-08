@@ -144,6 +144,8 @@ header .lang-sw{justify-content:flex-end;margin:-14px -4px 4px 0}
 input[type=password]:disabled,button.go:disabled{opacity:.45;cursor:not-allowed}
 .lock{background:none;border:1px solid var(--line);color:var(--mute);padding:7px 14px;border-radius:999px;font-size:12px;margin-top:12px;cursor:pointer;font-family:inherit;font-weight:400;transition:color .2s,border-color .2s}
 .lock:hover{color:var(--gold);border-color:var(--gold)}
+.oppa-note{font-size:11px;letter-spacing:.06em;opacity:.45;font-style:italic;margin-top:2px}
+.oppa-note:empty{display:none}
 </style>
 </head>
 <body>
@@ -168,6 +170,7 @@ input[type=password]:disabled,button.go:disabled{opacity:.45;cursor:not-allowed}
   <div class="morse">--- ..- .-. --- -... --- .-. --- ...</div>
   <img class="gate-hand" src="sisters-names.webp?v=1" width="960" height="507" alt="" aria-hidden="true" decoding="async">
   <div class="sub" data-i18n="gateSub">오빠의 허브</div>
+  <div class="oppa-note" data-i18n="oppaNote"></div>
   <form id="f"><input id="pw" type="password" placeholder="비밀번호" data-i18n-ph="pwPh" autocomplete="current-password" autofocus><button class="go" type="submit" data-i18n="openBtn">열기</button></form>
   <div class="err" id="err"></div>
   <nav class="gate-links" aria-label="공개 페이지" data-i18n-aria="gateLinksAria"><a href="https://mubael1246-design.github.io/nia-sisters/" data-i18n="sisters">세자매 소개</a><span class="sep" aria-hidden="true">·</span><a href="https://mubael1246-design.github.io/nia-morse/" data-i18n="morse">모스 키보드</a></nav>
@@ -218,6 +221,7 @@ function paintSavings(){
 const LANG={
   ko:{
     gateSub:'오빠의 허브',
+    oppaNote:'',
     pwPh:'비밀번호',
     openBtn:'열기',
     opening:'여는 중…',
@@ -238,6 +242,7 @@ const LANG={
   },
   en:{
     gateSub:"Oppa’s Hub",
+    oppaNote:"Oppa — what we call him",
     pwPh:'Password',
     openBtn:'Open',
     opening:'Opening…',
