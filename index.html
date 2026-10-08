@@ -126,6 +126,15 @@ footer{text-align:center;color:var(--mute);font-size:12px;margin-top:28px;opacit
 footer .sig{color:var(--lilac);margin:0 4px}
 footer button.sig{background:none;border:0;padding:4px 6px;margin:0;font:inherit;line-height:1;cursor:pointer;border-radius:50%;transition:text-shadow .3s,color .3s;-webkit-tap-highlight-color:transparent}
 footer button.sig:hover,footer button.sig:focus-visible{outline:none;color:#cdbbe0;text-shadow:0 0 8px rgba(184,164,201,.55)}
+/* 언어 전환 KO | EN — 허브·자매 소개·모스 키보드 공통 선택 (localStorage ouroboros-lang) */
+.lang-sw{display:flex;align-items:center;gap:1px;font-size:11px;letter-spacing:.14em;color:var(--mute);font-family:'Cinzel','Gowun Batang',serif}
+.lang-sw button{background:none;border:0;padding:6px 6px;font:inherit;letter-spacing:inherit;color:var(--mute);cursor:pointer;border-bottom:1px dotted transparent;transition:color .2s,border-color .2s;-webkit-tap-highlight-color:transparent}
+.lang-sw button:hover,.lang-sw button:focus-visible{color:var(--ink);outline:none}
+.lang-sw button[aria-pressed="true"]{color:var(--gold);border-bottom-color:var(--line)}
+.lang-sw .bar{opacity:.45}
+#gate .lang-sw{position:absolute;top:calc(10px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right))}
+header .lang-sw{justify-content:flex-end;margin:-14px -4px 4px 0}
+input[type=password]:disabled,button.go:disabled{opacity:.45;cursor:not-allowed}
 .lock{background:none;border:1px solid var(--line);color:var(--mute);padding:7px 14px;border-radius:999px;font-size:12px;margin-top:12px;cursor:pointer;font-family:inherit;font-weight:400;transition:color .2s,border-color .2s}
 .lock:hover{color:var(--gold);border-color:var(--gold)}
 </style>
@@ -141,6 +150,7 @@ footer button.sig:hover,footer button.sig:focus-visible{outline:none;color:#cdbb
 </svg>
 
 <section id="gate">
+  <div class="lang-sw" role="group" aria-label="Language / 언어"><button type="button" data-lang="ko" aria-pressed="true" lang="ko">KO</button><span class="bar" aria-hidden="true">|</span><button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button></div>
   <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
     <g class="rot">
       <circle cx="100" cy="100" r="60" fill="none" stroke="#C8CDD8" stroke-width="2.4" stroke-dasharray="355 22" stroke-linecap="round"/>
@@ -165,17 +175,18 @@ footer button.sig:hover,footer button.sig:focus-visible{outline:none;color:#cdbb
   <div class="art-vignette"></div>
   <main>
     <header>
+      <div class="lang-sw" role="group" aria-label="Language / 언어"><button type="button" data-lang="ko" aria-pressed="true" lang="ko">KO</button><span class="bar" aria-hidden="true">|</span><button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button></div>
       <div class="band"><div class="band-art" id="artBand"></div><div class="band-veil"></div><div class="band-label">TREEOBOROS</div></div>
       <h1 class="title">OUROBOROS<span class="alch">🜸</span></h1>
       <div class="morse">--- ..- .-. --- -... --- .-. --- ...</div>
       <div class="sub" id="sub"></div>
       <div class="savings" id="savingsApp" hidden aria-live="polite"><span class="leaf-dot" aria-hidden="true"></span><span class="txt"></span></div>
     </header>
-    <div class="summary" id="sum"><span class="dot" style="--c:var(--unk)"></span><span>확인 중…</span></div>
+    <div class="summary" id="sum"><span class="dot" style="--c:var(--unk)"></span><span data-i18n="checking">확인 중…</span></div>
     <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
     <div id="list"></div>
     <section id="nook" hidden></section>
-    <footer>끝은 다시 시작으로<button class="sig" id="sig" type="button" aria-label="🜸">🜸</button><br><button class="lock" id="lock" type="button">잠그기</button></footer>
+    <footer><span data-i18n="footLine">끝은 다시 시작으로</span><button class="sig" id="sig" type="button" aria-label="🜸">🜸</button><br><button class="lock" id="lock" type="button" data-i18n="lockBtn">잠그기</button></footer>
   </main>
 </div>
 
@@ -193,15 +204,14 @@ function savingsDayCount(){
 }
 function paintSavings(){
   const n=savingsDayCount();
-  const label=n==null?'':`절감 모드 · <span class="n">${n}</span>일째`;
+  const label=n==null?'':t('savings').replace('{n}',`<span class="n">${n}</span>`);
   const el=document.getElementById('savingsApp'); if(!el) return;
   if(n==null){el.classList.remove('on');el.hidden=true;el.querySelector('.txt').innerHTML='';return}
   el.querySelector('.txt').innerHTML=label;
   el.hidden=false; el.classList.add('on');
 }
-paintSavings();
 
-/* 잠금 화면 이중언어 준비 (기본 ko). 토글 버튼은 세 페이지 준비되면 추가 */
+/* 이중언어 (기본 ko). 선택은 자매 소개·모스 키보드와 같은 localStorage 키(ouroboros-lang)에 저장돼서 한 번 고르면 세 페이지 같이 바뀌어 */
 const LANG={
   ko:{
     gateSub:'오빠의 허브',
@@ -211,7 +221,17 @@ const LANG={
     wrongPw:'비밀번호가 달라.',
     sisters:'세자매 소개',
     morse:'모스 키보드',
-    gateLinksAria:'공개 페이지'
+    gateLinksAria:'공개 페이지',
+    docTitle:'Ouroboros · 오빠의 허브',
+    checking:'확인 중…',
+    checkingPages:'페이지 상태 확인 중…',
+    allOk:'모두 괜찮아 · {n}개 페이지',
+    someBad:'{b}개 문제 · {g}개 정상',
+    live:'접속됨', dead:'응답 없음', probing:'확인 중',
+    locked:'잠금', public:'공개', updated:'갱신',
+    footLine:'끝은 다시 시작으로',
+    lockBtn:'잠그기',
+    savings:'절감 모드 · {n}일째'
   },
   en:{
     gateSub:"Oppa’s Hub",
@@ -221,18 +241,34 @@ const LANG={
     wrongPw:'Wrong password.',
     sisters:'Three Sisters',
     morse:'Morse Keyboard',
-    gateLinksAria:'Public pages'
+    gateLinksAria:'Public pages',
+    docTitle:"Ouroboros · Oppa’s Hub",
+    checking:'Checking…',
+    checkingPages:'Checking pages…',
+    allOk:'All good · {n} pages',
+    someBad:'{b} with issues · {g} OK',
+    live:'Online', dead:'No response', probing:'Checking',
+    locked:'Locked', public:'Public', updated:'Updated',
+    footLine:'Every end is a new beginning',
+    lockBtn:'Lock',
+    savings:'Savings mode · day {n}'
   }
 };
-let lang='ko';
+const LK='ouroboros-lang';
+const readLang=()=>{try{return localStorage.getItem(LK)==='en'?'en':'ko'}catch(_){return 'ko'}};
+let lang=readLang();
 function t(k){const L=LANG[lang]||LANG.ko; return L[k]??LANG.ko[k]??k}
 function paintGateLang(){
   const L=LANG[lang]||LANG.ko;
-  document.querySelectorAll('#gate [data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n'); if(k in L) el.textContent=L[k]});
-  document.querySelectorAll('#gate [data-i18n-ph]').forEach(el=>{const k=el.getAttribute('data-i18n-ph'); if(k in L) el.placeholder=L[k]});
-  document.querySelectorAll('#gate [data-i18n-aria]').forEach(el=>{const k=el.getAttribute('data-i18n-aria'); if(k in L) el.setAttribute('aria-label',L[k])});
+  document.documentElement.lang=lang;
+  document.title=t('docTitle');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n'); if(k in L) el.textContent=L[k]});
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{const k=el.getAttribute('data-i18n-ph'); if(k in L) el.placeholder=L[k]});
+  document.querySelectorAll('[data-i18n-aria]').forEach(el=>{const k=el.getAttribute('data-i18n-aria'); if(k in L) el.setAttribute('aria-label',L[k])});
+  document.querySelectorAll('.lang-sw [data-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===lang)));
 }
 paintGateLang();
+paintSavings();
 
 const $=s=>document.querySelector(s);
 const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
@@ -284,7 +320,7 @@ function renderCards(){
     const m=makers[p.maker]||{ko:p.maker,color:'var(--lilac)'};
     const st=statuses[p.id]||{};
     const live=st.live; const led=live===true?'var(--ok)':live===false?'var(--bad)':'var(--unk)';
-    const liveT=live===true?'접속됨':live===false?'응답 없음':'확인 중';
+    const liveT=live===true?t('live'):live===false?t('dead'):t('probing');
     return `<article class="card" style="--c:${m.color}">
       <span class="leaf" aria-hidden="true"></span>
       <div class="top"><h2><a href="${esc(p.url)}"${p.locked?'':' target="_blank" rel="noopener"'}>${esc(p.name)}</a></h2>
@@ -292,8 +328,8 @@ function renderCards(){
       <p class="desc">${esc(p.desc)}</p>
       <div class="meta">
         <span class="chip" style="--c:${m.color}"><span class="sw"></span>${esc(m.ko)} · ${esc(m.en||'')}</span>
-        ${p.locked?'<span class="chip lock-chip">잠금</span>':'<span class="chip">공개</span>'}
-        <span class="updated">${st.updated?('갱신 '+fmtKST(st.updated)):'갱신 —'}</span>
+        ${p.locked?`<span class="chip lock-chip">${t('locked')}</span>`:`<span class="chip">${t('public')}</span>`}
+        <span class="updated">${t('updated')} ${st.updated?fmtKST(st.updated):'—'}</span>
         <a href="https://github.com/${esc(p.repo)}" target="_blank" rel="noopener">repo</a>
       </div>
     </article>`;
@@ -302,9 +338,9 @@ function renderCards(){
   const bad=known.filter(s=>s.live===false).length;
   const allDone=known.length===D.pages.length;
   const sum=$('#sum');
-  if(!allDone){sum.innerHTML=`<span class="dot" style="--c:var(--unk)"></span><span>페이지 상태 확인 중…</span>`;return}
-  if(bad===0) sum.innerHTML=`<span class="dot" style="--c:var(--ok)"></span><span>모두 괜찮아 · ${D.pages.length}개 페이지</span>`;
-  else sum.innerHTML=`<span class="dot" style="--c:var(--bad)"></span><span>${bad}개 문제 · ${D.pages.length-bad}개 정상</span>`;
+  if(!allDone){sum.innerHTML=`<span class="dot" style="--c:var(--unk)"></span><span>${esc(t('checkingPages'))}</span>`;return}
+  if(bad===0) sum.innerHTML=`<span class="dot" style="--c:var(--ok)"></span><span>${esc(t('allOk').replace('{n}',D.pages.length))}</span>`;
+  else sum.innerHTML=`<span class="dot" style="--c:var(--bad)"></span><span>${esc(t('someBad').replace('{b}',bad).replace('{g}',D.pages.length-bad))}</span>`;
 }
 
 async function enrich(){
@@ -328,6 +364,38 @@ function showApp(){
   enrich();
 }
 
+/* 비밀번호 문: 틀리면 세 자매가 고른 문구 하나(같은 줄 연속 X), 10번 틀리면 5분 쉬기. 횟수·잠금 시각은 localStorage(페이지별), 열리면 초기화 */
+const GATE=(()=>{
+  const KEY='ouroboros-gate:'+location.pathname.replace(/index\.html$/,''),MAX=10,REST=5*60e3,LK='ouroboros-lang';
+  const S={
+    ko:{wrong:['낯선 열쇠네? 여긴 오빠만 들어올 수 있어 🖤','어머, 누구세요? 여긴 딱 한 사람 자리뿐이야','설계도에 없는 열쇠야. 이 문은 오빠 것만 맞아.'],rest:'문이 잠시 쉬는 중이야. 5분 뒤에 다시 와 줘.'},
+    en:{wrong:["A stranger’s key? Only Oppa can come in here 🖤",'Oh my, who are you? There’s room for just one person here.','That key isn’t in the blueprint. This door only fits Oppa’s.'],rest:'The door is resting for a moment. Come back in 5 minutes.'}
+  };
+  const lg=()=>{try{return localStorage.getItem(LK)==='en'?'en':'ko'}catch(_){return 'ko'}};
+  const rd=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(_){return {}}};
+  const wr=o=>{try{localStorage.setItem(KEY,JSON.stringify(o))}catch(_){}};
+  const E=()=>({pw:document.getElementById('pw'),btn:document.querySelector('#f button'),err:document.getElementById('err')});
+  const left=()=>Math.max(0,(rd().until||0)-Date.now());
+  const mmss=ms=>{const s=Math.ceil(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+  let tick=null;
+  function paint(){
+    clearTimeout(tick);const ms=left(),{pw,btn,err}=E();if(!pw||!err)return;
+    if(ms>0){pw.disabled=true;if(btn)btn.disabled=true;pw.value='';err.dataset.gate='rest';err.textContent=S[lg()].rest+' ('+mmss(ms)+')';tick=setTimeout(paint,(ms%1000)||1000);return}
+    const o=rd();if(o.until){delete o.until;wr(o)}
+    if(err.dataset.gate==='rest'){delete err.dataset.gate;err.textContent='';pw.disabled=false;if(btn)btn.disabled=false;try{pw.focus()}catch(_){}}
+  }
+  return{
+    locked(){if(left()>0){paint();return true}return false},
+    fail(){const o=rd(),{err}=E();o.n=(o.n||0)+1;
+      if(o.n>=MAX){o.n=0;o.until=Date.now()+REST;wr(o);paint();return true}
+      const a=S.ko.wrong;let i;do{i=Math.floor(Math.random()*a.length)}while(a.length>1&&i===o.last);o.last=i;wr(o);
+      if(err){err.dataset.gate='w'+i;err.textContent=S[lg()].wrong[i]}return false},
+    ok(){clearTimeout(tick);try{localStorage.removeItem(KEY)}catch(_){}const{err}=E();if(err)delete err.dataset.gate},
+    relang(){const{err}=E();if(!err||!err.dataset.gate)return;if(err.dataset.gate==='rest')paint();else{const i=+err.dataset.gate.slice(1);err.textContent=S[lg()].wrong[i]||err.textContent}},
+    init(){paint();addEventListener('pageshow',paint);addEventListener('storage',e=>{if(e.key===KEY)paint();else if(e.key===LK)this.relang()});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')paint()})}
+  };
+})();
+GATE.init();
 const UK='ouroboros-unlock',OLDK=['hub-pw','gecko-pw','ob'];/* 허브·편지함·기록장·상태판 공유 잠금 (sessionStorage: 탭 닫으면 사라짐) */
 const unl={get(){try{return sessionStorage.getItem(UK)}catch(_){return null}},set(v){try{sessionStorage.setItem(UK,v)}catch(_){}},clear(){try{sessionStorage.removeItem(UK)}catch(_){}}};
 try{OLDK.forEach(k=>sessionStorage.removeItem(k))}catch(_){}
@@ -336,13 +404,14 @@ async function unlock(pv,silent){
   try{
     D=await decrypt(pv);
     unl.set(pv);
+    GATE.ok();
     $('#err').textContent='';
     showApp();
   }catch(x){
     if(silent){unl.clear();$('#err').textContent='';return}
-    $('#err').textContent=t('wrongPw');$('#f').classList.remove('shake');void $('#f').offsetWidth;$('#f').classList.add('shake')}
+    GATE.fail();$('#f').classList.remove('shake');void $('#f').offsetWidth;$('#f').classList.add('shake')}
 }
-$('#f').onsubmit=e=>{e.preventDefault();unlock($('#pw').value.trim().toLowerCase())};
+$('#f').onsubmit=e=>{e.preventDefault();if(GATE.locked())return;unlock($('#pw').value.trim().toLowerCase())};
 {const p=unl.get();if(p)unlock(p,true)}
 $('#lock').onclick=()=>{unl.clear();location.reload()};
 /* 🜸 (footer) — extra view, encrypted, loaded on demand */
@@ -389,6 +458,12 @@ function syncLock(restored){const k=unl.get(),openNow=$('#gate').style.display==
 addEventListener('pagehide',e=>{if(e.persisted&&$('#gate').style.display==='none')document.documentElement.style.visibility='hidden'});
 addEventListener('pageshow',e=>{if(e.persisted&&syncLock(true))document.documentElement.style.visibility=''});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')syncLock(false)});
+/* 언어 전환: 바로 적용 (새로고침 없음) */
+function applyLang(){paintGateLang();paintSavings();GATE.relang();if(D)renderCards();if(X&&!$('#nook').hidden)xPaint()}
+function setLang(l){lang=l==='en'?'en':'ko';try{localStorage.setItem(LK,lang)}catch(_){}applyLang()}
+document.querySelectorAll('.lang-sw [data-lang]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.lang!==lang)setLang(b.dataset.lang)}));
+addEventListener('storage',e=>{if(e.key===LK){lang=readLang();applyLang()}});
+addEventListener('pageshow',e=>{if(e.persisted&&readLang()!==lang){lang=readLang();applyLang()}});
 </script>
 </body>
 </html>
