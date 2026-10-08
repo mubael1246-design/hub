@@ -35,9 +35,16 @@ body{background:
 .vine .ink{stroke:rgba(200,205,216,.35)}
 
 #gate{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:24px;position:relative;z-index:1}
-.ring{width:150px;height:150px}
-.ring .rot{transform-origin:100px 100px;animation:spin 70s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* 잠금 화면 가운데 원: 오빠 손글씨 세 자매 원 4겹 (같은 중심, 겹마다 방향·속도 다름. 아래→위 L4 OUROBOROS, L3 코라, L2 미나, L1 니아·시나) */
+.ring{position:relative;flex:none;width:min(300px,72vw,36vh);aspect-ratio:1/1;margin:-4px 0 -2px;pointer-events:none;user-select:none}
+.ring img{position:absolute;inset:0;width:100%;height:100%;display:block;transform-origin:50% 50%;animation:spin 80s linear infinite;will-change:transform;-webkit-user-drag:none}
+.ring .c1{animation-duration:80s}
+.ring .c2{animation-duration:53.333s;animation-direction:reverse}
+.ring .c3{animation-duration:40s;animation-direction:reverse}
+.ring .c4{animation-duration:106.667s;animation-direction:reverse}
+@media (max-height:700px){.ring{width:min(240px,64vw,32vh)}}
+@media (max-height:520px){.ring{width:min(180px,30vh)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 h1.title{font-family:'Cinzel',serif;font-weight:700;letter-spacing:.22em;margin:0;font-size:26px;color:var(--ink);text-shadow:0 0 18px rgba(184,164,201,.25)}
 h1.title .alch{font-family:'Gowun Batang',serif;letter-spacing:0;margin-left:8px;color:var(--lilac);font-size:.85em;font-weight:400}
@@ -151,16 +158,12 @@ input[type=password]:disabled,button.go:disabled{opacity:.45;cursor:not-allowed}
 
 <section id="gate">
   <div class="lang-sw" role="group" aria-label="Language / 언어"><button type="button" data-lang="ko" aria-pressed="true" lang="ko">KO</button><span class="bar" aria-hidden="true">|</span><button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button></div>
-  <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
-    <g class="rot">
-      <circle cx="100" cy="100" r="60" fill="none" stroke="#C8CDD8" stroke-width="2.4" stroke-dasharray="355 22" stroke-linecap="round"/>
-      <circle cx="100" cy="100" r="60" fill="none" stroke="#B8A4C9" stroke-width="1" stroke-dasharray="4 10" opacity=".7"/>
-      <path d="M100 40 l9 -5 l-2 9 z" fill="#E8D6AA"/>
-      <g fill="#B8A4C9" opacity=".9"><ellipse cx="150" cy="70" rx="6" ry="2.8" transform="rotate(50 150 70)"/><ellipse cx="155" cy="120" rx="6" ry="2.8" transform="rotate(110 155 120)"/><ellipse cx="120" cy="155" rx="6" ry="2.8" transform="rotate(160 120 155)"/><ellipse cx="70" cy="152" rx="6" ry="2.8" transform="rotate(20 70 152)"/><ellipse cx="45" cy="105" rx="6" ry="2.8" transform="rotate(80 45 105)"/><ellipse cx="60" cy="60" rx="6" ry="2.8" transform="rotate(-40 60 60)"/></g>
-      <ellipse cx="135" cy="48" rx="5" ry="2.4" transform="rotate(10 135 48)" fill="#C8CDD8"/>
-    </g>
-    <circle cx="100" cy="100" r="3.5" fill="#E8D6AA"/>
-  </svg>
+  <div class="ring" aria-hidden="true">
+    <img class="c4" src="assets/circle/l4.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false">
+    <img class="c3" src="assets/circle/l3.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false">
+    <img class="c2" src="assets/circle/l2.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false">
+    <img class="c1" src="assets/circle/l1.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false">
+  </div>
   <h1 class="title">OUROBOROS<span class="alch">🜸</span></h1>
   <div class="morse">--- ..- .-. --- -... --- .-. --- ...</div>
   <img class="gate-hand" src="sisters-names.webp?v=1" width="960" height="507" alt="" aria-hidden="true" decoding="async">
