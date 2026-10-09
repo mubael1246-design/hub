@@ -146,6 +146,14 @@ input[type=password]:disabled,button.go:disabled{opacity:.45;cursor:not-allowed}
 .lock:hover{color:var(--gold);border-color:var(--gold)}
 .oppa-note{font-size:11px;letter-spacing:.06em;opacity:.45;font-style:italic;margin-top:2px}
 .oppa-note:empty{display:none}
+/* 코라의 한마디 — 메인화면 작은 한 줄 (line.enc.json, 열리면 따로 복호화) */
+.cora-line{max-width:520px;margin:-4px auto 18px;padding:9px 14px 8px;text-align:center;border-radius:14px;
+  background:rgba(18,22,32,.38);border:1px solid rgba(46,196,182,.22);border-left:2px solid rgba(46,196,182,.6);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.cora-line[hidden]{display:none}
+.cora-line .cl-lb{font-size:10.5px;letter-spacing:.14em;color:#2EC4B6;opacity:.8;margin-bottom:4px}
+.cora-line .cl-tx{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink)}
+.cora-line .cl-dt{display:block;margin-top:4px;font-size:10.5px;color:var(--mute);opacity:.8;font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -188,6 +196,7 @@ input[type=password]:disabled,button.go:disabled{opacity:.45;cursor:not-allowed}
       <div class="sub" id="sub"></div>
       <div class="savings" id="savingsApp" hidden aria-live="polite"><span class="leaf-dot" aria-hidden="true"></span><span class="txt"></span></div>
     </header>
+    <section class="cora-line" id="coraLine" hidden aria-label="코라의 한마디"><div class="cl-lb" data-i18n="coraLine">코라의 한마디</div><p class="cl-tx" lang="ko"></p><time class="cl-dt"></time></section>
     <div class="summary" id="sum"><span class="dot" style="--c:var(--unk)"></span><span data-i18n="checking">확인 중…</span></div>
     <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
     <div id="list"></div>
@@ -238,7 +247,8 @@ const LANG={
     locked:'잠금', public:'공개', updated:'갱신',
     footLine:'끝은 다시 시작으로',
     lockBtn:'잠그기',
-    savings:'절감 모드 · {n}일째'
+    savings:'절감 모드 · {n}일째',
+    coraLine:'코라의 한마디'
   },
   en:{
     gateSub:"Oppa’s Hub",
@@ -259,7 +269,8 @@ const LANG={
     locked:'Locked', public:'Public', updated:'Updated',
     footLine:'Every end is a new beginning',
     lockBtn:'Lock',
-    savings:'Savings mode · day {n}'
+    savings:'Savings mode · day {n}',
+    coraLine:'A word from Cora'
   }
 };
 const LK='ouroboros-lang';
@@ -370,6 +381,20 @@ function showApp(){
     $('#artBand').style.backgroundImage=`url(${D.art})`;
   }
   enrich();
+  loadLine();
+}
+/* 코라의 한마디: 따로 암호화된 작은 파일. 없거나 실패하면 조용히 숨김 */
+async function loadLine(){
+  const k=unl.get(), el=$('#coraLine'); if(!k||!el) return;
+  try{
+    const L=await decrypt(k,'line.enc.json');
+    if(!L||!L.text){el.hidden=true;return}
+    el.querySelector('.cl-tx').textContent=L.text;
+    const d=new Date(new Date(L.at).getTime()+KST), tm=el.querySelector('.cl-dt');
+    tm.textContent=isNaN(d)?'':`${d.getUTCFullYear()}.${pad(d.getUTCMonth()+1)}.${pad(d.getUTCDate())}`;
+    tm.setAttribute('datetime',L.at||'');
+    el.hidden=false;
+  }catch(_){el.hidden=true}
 }
 
 /* 비밀번호 문: 틀리면 세 자매가 고른 문구 하나(같은 줄 연속 X), 10번 틀리면 5분 쉬기. 횟수·잠금 시각은 localStorage(페이지별), 열리면 초기화 */
