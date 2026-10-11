@@ -207,7 +207,7 @@ input[type=password]:disabled,button.go:disabled{opacity:.45;cursor:not-allowed}
 
 <script>
 /* 사용량 절감 모드 — on/off 와 시작일(KST 달력)만 바꾸면 됨. OFF 면 배지 숨김 */
-const SAVINGS_MODE={on:true, startDate:'2026-10-07'};
+const SAVINGS_MODE={on:false, startDate:'2026-10-07'};
 function savingsDayCount(){
   if(!SAVINGS_MODE.on||!SAVINGS_MODE.startDate) return null;
   const today=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Seoul'}); // YYYY-MM-DD
