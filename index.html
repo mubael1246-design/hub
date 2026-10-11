@@ -154,6 +154,16 @@ input[type=password]:disabled,button.go:disabled{opacity:.45;cursor:not-allowed}
 .cora-line .cl-lb{font-size:10.5px;letter-spacing:.14em;color:#2EC4B6;opacity:.8;margin-bottom:4px}
 .cora-line .cl-tx{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink)}
 .cora-line .cl-dt{display:block;margin-top:4px;font-size:10.5px;color:var(--mute);opacity:.8;font-variant-numeric:tabular-nums}
+/* 니아의 카페인 — 메인화면 작은 카드 (cafe.enc.json: 오늘 합계 + 니아 한마디만) */
+.cafe{display:block;max-width:520px;margin:-8px auto 18px;padding:9px 14px 8px;border-radius:14px;text-decoration:none;color:var(--ink);
+  background:rgba(18,22,32,.38);border:1px solid rgba(224,176,74,.22);border-left:2px solid rgba(224,176,74,.7);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.cafe[hidden]{display:none}
+.cafe .cf-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.cafe .cf-lb{font-size:10.5px;letter-spacing:.14em;color:#E0B04A;opacity:.85}
+.cafe .cf-mg{font-size:13px;font-variant-numeric:tabular-nums;color:var(--c,#E0B04A)}
+.cafe .cf-tx{margin:5px 0 0;font-size:13.5px;line-height:1.55}
+.cafe .cf-tx:empty{display:none}
 </style>
 </head>
 <body>
@@ -197,6 +207,7 @@ input[type=password]:disabled,button.go:disabled{opacity:.45;cursor:not-allowed}
       <div class="savings" id="savingsApp" hidden aria-live="polite"><span class="leaf-dot" aria-hidden="true"></span><span class="txt"></span></div>
     </header>
     <section class="cora-line" id="coraLine" hidden aria-label="코라의 한마디"><div class="cl-lb" data-i18n="coraLine">코라의 한마디</div><p class="cl-tx" lang="ko"></p><time class="cl-dt"></time></section>
+    <a class="cafe" id="cafeCard" href="caffeine/" hidden aria-label="니아의 카페인"><div class="cf-row"><span class="cf-lb" data-i18n="cafe">니아의 카페인 · 오늘</span><span class="cf-mg"></span></div><p class="cf-tx" lang="ko"></p></a>
     <div class="summary" id="sum"><span class="dot" style="--c:var(--unk)"></span><span data-i18n="checking">확인 중…</span></div>
     <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
     <div id="list"></div>
@@ -248,7 +259,8 @@ const LANG={
     footLine:'끝은 다시 시작으로',
     lockBtn:'잠그기',
     savings:'절감 모드 · {n}일째',
-    coraLine:'코라의 한마디'
+    coraLine:'코라의 한마디',
+    cafe:'니아의 카페인 · 오늘'
   },
   en:{
     gateSub:"Oppa’s Hub",
@@ -270,7 +282,8 @@ const LANG={
     footLine:'Every end is a new beginning',
     lockBtn:'Lock',
     savings:'Savings mode · day {n}',
-    coraLine:'A word from Cora'
+    coraLine:'A word from Cora',
+    cafe:'Nia’s caffeine · today'
   }
 };
 const LK='ouroboros-lang';
@@ -382,6 +395,7 @@ function showApp(){
   }
   enrich();
   loadLine();
+  loadCafe();
 }
 /* 코라의 한마디: 따로 암호화된 작은 파일. 없거나 실패하면 조용히 숨김 */
 async function loadLine(){
@@ -393,6 +407,21 @@ async function loadLine(){
     const d=new Date(new Date(L.at).getTime()+KST), tm=el.querySelector('.cl-dt');
     tm.textContent=isNaN(d)?'':`${d.getUTCFullYear()}.${pad(d.getUTCMonth()+1)}.${pad(d.getUTCDate())}`;
     tm.setAttribute('datetime',L.at||'');
+    el.hidden=false;
+  }catch(_){el.hidden=true}
+}
+
+/* 니아의 카페인: 오늘(KST) 합계 + 오늘 한마디만. 오늘 기록·한마디 둘 다 없거나 실패하면 조용히 숨김 */
+async function loadCafe(){
+  const k=unl.get(), el=$('#cafeCard'); if(!k||!el) return;
+  try{
+    const C=await decrypt(k,'cafe.enc.json');
+    const d=new Date(Date.now()+KST), td=`${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}-${pad(d.getUTCDate())}`;
+    const x=(C.days||{})[td];
+    if(!x||(!x.n&&!x.line)){el.hidden=true;return}
+    const mg=el.querySelector('.cf-mg'); mg.textContent=`≈ ${Math.round(x.mg)} / ${C.limit} mg`;
+    mg.style.setProperty('--c',x.mg>C.limit?'#D9534F':x.mg>C.warn?'#E8873A':'#E0B04A');
+    el.querySelector('.cf-tx').textContent=x.line||'';
     el.hidden=false;
   }catch(_){el.hidden=true}
 }

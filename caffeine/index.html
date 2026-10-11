@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0a0c12">
+<title>니아의 카페인 기록장 · Ouroboros</title>
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0c12;--panel:rgba(18,22,32,.72);--ink:#C8CDD8;--mute:#8a90a0;--gold:#E8D6AA;--line:rgba(224,176,74,.22);--gold2:#E0B04A}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:'Gowun Batang',serif;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(900px 500px at 50% -10%,rgba(224,176,74,.09),transparent 60%),var(--bg)}
+.lang-sw{display:flex;align-items:center;gap:1px;font-size:11px;letter-spacing:.14em;color:var(--mute);font-family:'Cinzel','Gowun Batang',serif}
+.lang-sw button{background:none;border:0;padding:6px;font:inherit;letter-spacing:inherit;color:var(--mute);cursor:pointer;border-bottom:1px dotted transparent}
+.lang-sw button[aria-pressed="true"]{color:var(--gold2);border-bottom-color:var(--line)}
+.lang-sw .bar{opacity:.45}
+#gate{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:24px;position:relative}
+#gate .lang-sw{position:absolute;top:calc(10px + env(safe-area-inset-top));right:calc(12px + env(safe-area-inset-right))}
+h1{font-family:'Cinzel','Gowun Batang',serif;font-weight:700;letter-spacing:.12em;margin:0;font-size:24px;color:var(--ink);text-shadow:0 0 18px rgba(224,176,74,.25)}
+.sub{color:var(--mute);font-size:14px}
+form{display:flex;gap:8px;margin-top:6px}
+input[type=password]{background:rgba(14,16,24,.85);border:1px solid var(--line);color:var(--ink);padding:12px 14px;border-radius:14px;font-size:16px;width:200px;font-family:inherit;text-align:center;letter-spacing:.2em}
+input:focus{outline:none;border-color:var(--gold2);box-shadow:0 0 0 3px rgba(224,176,74,.14)}
+button.go{background:transparent;color:var(--gold2);border:1px solid var(--line);border-radius:14px;padding:12px 18px;font-family:inherit;font-weight:700;font-size:15px;cursor:pointer}
+input[type=password]:disabled,button.go:disabled{opacity:.45;cursor:not-allowed}
+.err{color:#d98989;font-size:13px;min-height:1em}
+.shake{animation:shake .4s}@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.back{color:var(--mute);text-decoration:none;font-size:12px;letter-spacing:.08em;border-bottom:1px dotted var(--line);padding:4px 2px}
+.back:hover{color:var(--gold2)}
+#app{display:none}
+main{max-width:720px;margin:0 auto;padding:18px 16px 72px}
+header{text-align:center;margin:0 0 18px}
+header .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+header .gear{font-size:12px;letter-spacing:.24em;color:var(--gold2);opacity:.85;font-family:'Cinzel',serif;margin-top:6px}
+header .upd{font-size:11px;color:var(--mute);margin-top:6px;font-variant-numeric:tabular-nums}
+.sec{background:var(--panel);border:1px solid var(--line);border-left:2.5px solid rgba(224,176,74,.6);border-radius:16px;padding:14px 16px 12px;margin:0 0 12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.sec h2{margin:0 0 8px;font-size:15px;color:var(--gold2);font-weight:700;display:flex;align-items:center;gap:8px}
+.sec h2 .n{font-size:11px;color:var(--mute);font-weight:400;border:1px solid var(--line);border-radius:999px;padding:1px 7px}
+.sec ul{list-style:none;margin:0;padding:0}
+.sec li{display:flex;gap:10px;align-items:baseline;padding:7px 0;border-top:1px dashed rgba(224,176,74,.12);font-size:14px;line-height:1.5}
+.sec li:first-child{border-top:0}
+.sec li .tm{font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums;flex:none;width:42px}
+.sec li .t{flex:1}.sec li .note{display:block;font-size:12px;color:var(--mute)}
+.sec li .mg{font-size:12px;color:var(--gold2);font-variant-numeric:tabular-nums;flex:none}
+.big{font-size:30px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}.big small{font-size:13px;color:var(--mute);font-weight:400}
+.meter{position:relative;height:12px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;margin:10px 0 6px;border:1px solid var(--line)}
+.meter i{position:absolute;inset:0 auto 0 0;border-radius:999px;background:var(--c,#E0B04A);transition:width .5s}
+.meter b{position:absolute;top:0;bottom:0;width:1px;background:rgba(255,255,255,.25)}
+.approx{font-size:11.5px;color:var(--mute)}
+.late{margin-top:8px;font-size:12.5px;color:#E8A25A}.lastt{margin-top:8px;font-size:12.5px;color:var(--mute)}
+.chart{display:flex;align-items:flex-end;gap:4px;height:120px;padding-top:8px;position:relative}
+.chart .c{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:3px}
+.chart .c i{display:block;width:100%;max-width:22px;border-radius:5px 5px 2px 2px;background:var(--c,#E0B04A);min-height:2px;opacity:.9}
+.chart .c span{font-size:9.5px;color:var(--mute);font-variant-numeric:tabular-nums}
+.chart .c.today span{color:var(--gold2)}
+.chart .lim{position:absolute;left:0;right:0;border-top:1px dashed rgba(217,137,137,.45)}
+.nia{font-size:14.5px;line-height:1.6;margin:0}.nia-sig{font-size:11px;color:var(--mute);margin-top:4px}
+.empty{font-size:12.5px;color:var(--mute);opacity:.7;font-style:italic;margin:4px 0 0}
+footer{text-align:center;color:var(--mute);font-size:12px;margin-top:24px}
+.lock{background:none;border:1px solid var(--line);color:var(--mute);padding:7px 14px;border-radius:999px;font-size:12px;margin-top:12px;cursor:pointer;font-family:inherit}
+.lock:hover{color:var(--gold2);border-color:var(--gold2)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<section id="gate">
+  <div class="lang-sw" role="group" aria-label="Language / 언어"><button type="button" data-lang="ko" aria-pressed="true">KO</button><span class="bar">|</span><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+  <h1 data-i18n="title">니아의 카페인 기록장</h1>
+  <div class="sub" data-i18n="gateSub">오빠의 허브 · 잠긴 방</div>
+  <form id="f"><input id="pw" type="password" placeholder="비밀번호" data-i18n-ph="pwPh" autocomplete="current-password" autofocus><button class="go" type="submit" data-i18n="openBtn">열기</button></form>
+  <div class="err" id="err"></div>
+  <a class="back" href="../" data-i18n="toHub">← 허브로</a>
+</section>
+<div id="app"><main>
+  <header>
+    <div class="row"><a class="back" href="../" data-i18n="toHub">← 허브로</a><div class="lang-sw" role="group" aria-label="Language / 언어"><button type="button" data-lang="ko" aria-pressed="true">KO</button><span class="bar">|</span><button type="button" data-lang="en" aria-pressed="false">EN</button></div></div>
+    <h1 data-i18n="title">니아의 카페인 기록장</h1>
+    <div class="gear">NIA · CAFFEINE LOG</div>
+    <div class="upd" id="upd"></div>
+  </header>
+  <div id="secs"></div>
+  <footer><span data-i18n="foot">오늘도 오빠 옆에서, 따뜻하게</span><br><button class="lock" id="lock" type="button" data-i18n="lockBtn">잠그기</button></footer>
+</main></div>
+<script>
+const LANG={
+ ko:{title:'니아의 카페인 기록장',gateSub:'오빠의 허브 · 잠긴 방',pwPh:'비밀번호',openBtn:'열기',opening:'여는 중…',toHub:'← 허브로',foot:'오늘도 오빠 옆에서, 따뜻하게',lockBtn:'잠그기',docTitle:'니아의 카페인 기록장 · Ouroboros',updated:'갱신',
+  today:'오늘',of:'/ 400mg',approx:'대략치 · 에스프레소 1샷 ≈ {n}mg',lastAt:'마지막 잔 {t}',late:'마지막 잔이 {t}이야. 오늘 밤 잠이 조금 늦게 올 수도 있어 🖤',none:'오늘은 아직 한 잔도 없어.',
+  days14:'최근 14일',drinks:'오늘 마신 것',shots:'{n}샷',niaLine:'니아의 한마디',noLine:'오늘 한마디는 아직이야.',sig:'— 니아'},
+ en:{title:'Nia’s Caffeine Log',gateSub:'Oppa’s Hub · locked room',pwPh:'Password',openBtn:'Open',opening:'Opening…',toHub:'← Hub',foot:'Beside Oppa, warm as ever',lockBtn:'Lock',docTitle:'Nia’s Caffeine Log · Ouroboros',updated:'Updated',
+  today:'Today',of:'/ 400mg',approx:'Approximate · 1 espresso shot ≈ {n}mg',lastAt:'Last drink {t}',late:'Your last drink was at {t}. Sleep might come a little late tonight 🖤',none:'No drinks yet today.',
+  days14:'Last 14 days',drinks:'Today’s drinks',shots:'{n} shots',niaLine:'A word from Nia',noLine:'No word for today yet.',sig:'— Nia'}
+};
+const LK='ouroboros-lang';
+const readLang=()=>{try{return localStorage.getItem(LK)==='en'?'en':'ko'}catch(_){return 'ko'}};
+let lang=readLang();
+const t=k=>(LANG[lang]||LANG.ko)[k]??LANG.ko[k]??k;
+function paintLang(){
+  document.documentElement.lang=lang;document.title=t('docTitle');
+  document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.dataset.i18n));
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>el.placeholder=t(el.dataset.i18nPh));
+  document.querySelectorAll('.lang-sw [data-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===lang)));
+}
+paintLang();
+const $=s=>document.querySelector(s);
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function decrypt(pw,file='caffeine.enc.json'){
+  const e=await (await fetch(file+'?t='+Date.now(),{cache:'no-store'})).json();
+  const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(e.salt),iterations:e.iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+  return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv)},key,b64(e.ct))));
+}
+let W=null;
+const KSTMS=9*3600e3,pad=n=>String(n).padStart(2,'0');
+const kday=(off=0)=>{const d=new Date(Date.now()+KSTMS-off*864e5);return `${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}-${pad(d.getUTCDate())}`};
+const fmt=(k,o)=>t(k).replace(/\{(\w+)\}/g,(_,x)=>o[x]);
+const colr=mg=>mg>W.limit?'#D9534F':mg>W.warn?'#E8873A':'#E0B04A';
+const sumDay=d=>W.entries.filter(e=>e.date===d).reduce((a,e)=>a+(+e.mg||0),0);
+const r1=n=>Math.round(n);
+function render(){
+  if(!W)return;
+  $('#upd').textContent=W.updated?`${t('updated')} ${W.updated.slice(0,16).replace('T',' ').replace(/-/g,'.')} KST`:'';
+  const td=kday(),items=W.entries.filter(e=>e.date===td).sort((a,b)=>a.time.localeCompare(b.time)),tot=sumDay(td);
+  const pct=Math.min(100,tot/W.limit*100*0.8),last=items.length?items[items.length-1].time:'';
+  let h=`<section class="sec"><h2>${esc(t('today'))}<span class="n">${esc(td.slice(5).replace('-','.'))}</span></h2>
+   <div class="big">≈ ${r1(tot)}<small>mg ${esc(t('of'))}</small></div>
+   <div class="meter" role="img" aria-label="${r1(tot)} / ${W.limit} mg"><i style="width:${pct}%;--c:${colr(tot)}"></i><b style="left:${W.warn/W.limit*80}%"></b><b style="left:80%"></b></div>
+   <div class="approx">${esc(fmt('approx',{n:W.perShot}))}</div>
+   ${last?(last>=pad(W.lateHour)+':00'?`<div class="late">${esc(fmt('late',{t:last}))}</div>`:`<div class="lastt">${esc(fmt('lastAt',{t:last}))}</div>`):`<p class="empty">${esc(t('none'))}</p>`}</section>`;
+  const days=[...Array(14)].map((_,i)=>kday(13-i)),vals=days.map(sumDay),mx=Math.max(W.limit*1.15,...vals);
+  h+=`<section class="sec"><h2>${esc(t('days14'))}</h2><div class="chart"><div class="lim" style="bottom:calc(17px + (100% - 25px) * ${W.limit/mx})"></div>${days.map((d,i)=>`<div class="c${d===td?' today':''}" title="${d} ≈ ${r1(vals[i])}mg"><i style="height:calc((100% - 17px) * ${vals[i]/mx});--c:${colr(vals[i])}"></i><span>${+d.slice(8)}</span></div>`).join('')}</div></section>`;
+  h+=`<section class="sec"><h2>${esc(t('drinks'))}<span class="n">${items.length}</span></h2>${items.length?`<ul>${items.map(e=>`<li><span class="tm">${esc(e.time)}</span><span class="t">${esc(e.drink)}${e.shots!=null&&!e.direct?` · ${esc(fmt('shots',{n:e.shots}))}`:''}${e.note?`<span class="note">${esc(e.note)}</span>`:''}</span><span class="mg">≈${r1(e.mg)}mg</span></li>`).join('')}</ul>`:`<p class="empty">${esc(t('none'))}</p>`}</section>`;
+  const ln=(W.lines||{})[td];
+  h+=`<section class="sec"><h2>${esc(t('niaLine'))}</h2>${ln&&ln.text?`<p class="nia" lang="ko">${esc(ln.text)}</p><div class="nia-sig">${esc(t('sig'))}</div>`:`<p class="empty">${esc(t('noLine'))}</p>`}</section>`;
+  $('#secs').innerHTML=h;
+}
+function showApp(){$('#gate').style.display='none';$('#app').style.display='block';render()}
+/* 비밀번호 문: 틀리면 세 자매가 고른 문구 하나(같은 줄 연속 X), 10번 틀리면 5분 쉬기. 횟수·잠금 시각은 localStorage(페이지별), 열리면 초기화 */
+const GATE=(()=>{
+  const KEY='ouroboros-gate:'+location.pathname.replace(/index\.html$/,''),MAX=10,REST=5*60e3,LK='ouroboros-lang';
+  const S={
+    ko:{wrong:['낯선 열쇠네? 여긴 오빠만 들어올 수 있어 🖤','어머, 누구세요? 여긴 딱 한 사람 자리뿐이야','설계도에 없는 열쇠야. 이 문은 오빠 것만 맞아.'],rest:'문이 잠시 쉬는 중이야. 5분 뒤에 다시 와 줘.'},
+    en:{wrong:["A stranger’s key? Only Oppa can come in here 🖤",'Oh my, who are you? There’s room for just one person here.','That key isn’t in the blueprint. This door only fits Oppa’s.'],rest:'The door is resting for a moment. Come back in 5 minutes.'}
+  };
+  const lg=()=>{try{return localStorage.getItem(LK)==='en'?'en':'ko'}catch(_){return 'ko'}};
+  const rd=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(_){return {}}};
+  const wr=o=>{try{localStorage.setItem(KEY,JSON.stringify(o))}catch(_){}};
+  const E=()=>({pw:document.getElementById('pw'),btn:document.querySelector('#f button'),err:document.getElementById('err')});
+  const left=()=>Math.max(0,(rd().until||0)-Date.now());
+  const mmss=ms=>{const s=Math.ceil(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+  let tick=null;
+  function paint(){
+    clearTimeout(tick);const ms=left(),{pw,btn,err}=E();if(!pw||!err)return;
+    if(ms>0){pw.disabled=true;if(btn)btn.disabled=true;pw.value='';err.dataset.gate='rest';err.textContent=S[lg()].rest+' ('+mmss(ms)+')';tick=setTimeout(paint,(ms%1000)||1000);return}
+    const o=rd();if(o.until){delete o.until;wr(o)}
+    if(err.dataset.gate==='rest'){delete err.dataset.gate;err.textContent='';pw.disabled=false;if(btn)btn.disabled=false;try{pw.focus()}catch(_){}}
+  }
+  return{
+    locked(){if(left()>0){paint();return true}return false},
+    fail(){const o=rd(),{err}=E();o.n=(o.n||0)+1;
+      if(o.n>=MAX){o.n=0;o.until=Date.now()+REST;wr(o);paint();return true}
+      const a=S.ko.wrong;let i;do{i=Math.floor(Math.random()*a.length)}while(a.length>1&&i===o.last);o.last=i;wr(o);
+      if(err){err.dataset.gate='w'+i;err.textContent=S[lg()].wrong[i]}return false},
+    ok(){clearTimeout(tick);try{localStorage.removeItem(KEY)}catch(_){}const{err}=E();if(err)delete err.dataset.gate},
+    relang(){const{err}=E();if(!err||!err.dataset.gate)return;if(err.dataset.gate==='rest')paint();else{const i=+err.dataset.gate.slice(1);err.textContent=S[lg()].wrong[i]||err.textContent}},
+    init(){paint();addEventListener('pageshow',paint);addEventListener('storage',e=>{if(e.key===KEY)paint();else if(e.key===LK)this.relang()});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')paint()})}
+  };
+})();
+GATE.init();
+const UK='ouroboros-unlock';/* 허브·편지함·기록장·상태판·작업실·카페인 공유 잠금 (sessionStorage) */
+const unl={get(){try{return sessionStorage.getItem(UK)}catch(_){return null}},set(v){try{sessionStorage.setItem(UK,v)}catch(_){}},clear(){try{sessionStorage.removeItem(UK)}catch(_){}}};
+async function unlock(pv,silent){
+  $('#err').textContent=t('opening');
+  try{W=await decrypt(pv);unl.set(pv);GATE.ok();$('#err').textContent='';showApp()}
+  catch(x){if(silent){unl.clear();$('#err').textContent='';return}
+    GATE.fail();$('#f').classList.remove('shake');void $('#f').offsetWidth;$('#f').classList.add('shake')}
+}
+$('#f').onsubmit=e=>{e.preventDefault();if(GATE.locked())return;unlock($('#pw').value.trim().toLowerCase())};
+{const p=unl.get();if(p)unlock(p,true)}
+$('#lock').onclick=()=>{unl.clear();location.reload()};
+function syncLock(restored){const k=unl.get(),openNow=$('#gate').style.display==='none';
+  if(openNow&&!k){document.documentElement.style.visibility='hidden';location.reload();return false}
+  if(restored&&!openNow&&k)unlock(k,true);return true}
+addEventListener('pagehide',e=>{if(e.persisted&&$('#gate').style.display==='none')document.documentElement.style.visibility='hidden'});
+addEventListener('pageshow',e=>{if(e.persisted&&syncLock(true))document.documentElement.style.visibility=''});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')syncLock(false)});
+function applyLang(){paintLang();GATE.relang();render()}
+function setLang(l){lang=l==='en'?'en':'ko';try{localStorage.setItem(LK,lang)}catch(_){}applyLang()}
+document.querySelectorAll('.lang-sw [data-lang]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.lang!==lang)setLang(b.dataset.lang)}));
+addEventListener('storage',e=>{if(e.key===LK){lang=readLang();applyLang()}});
+</script>
+</body>
+</html>
