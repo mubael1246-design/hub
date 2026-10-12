@@ -51,7 +51,8 @@ header .ring.mini{width:min(112px,30vw);margin:0 auto 8px;opacity:.9}
 @media (max-height:520px){.ring{width:min(180px,30vh)}}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
-h1.title{font-family:'Cinzel',serif;font-weight:700;letter-spacing:.22em;margin:0;font-size:26px;color:var(--ink);text-shadow:0 0 18px rgba(184,164,201,.25)}
+@font-face{font-family:'OuroborosHand';src:url('assets/font/OuroborosHand.woff2') format('woff2');font-display:swap;unicode-range:U+0020-007E}
+h1.title{font-family:'OuroborosHand','Cinzel',serif;font-weight:700;letter-spacing:.22em;margin:0;font-size:26px;color:var(--ink);text-shadow:0 0 18px rgba(184,164,201,.25)}
 h1.title .alch{font-family:'Gowun Batang',serif;letter-spacing:0;margin-left:8px;color:var(--lilac);font-size:.85em;font-weight:400}
 .morse{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:2.4px;color:var(--gold);opacity:.7;margin-top:-4px}
 .sub{color:var(--mute);font-size:14px}
@@ -95,7 +96,7 @@ header .band-art{position:absolute;inset:0;background-size:cover;background-posi
   opacity:.38}
 header .band-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,18,.25),rgba(10,12,18,.7))}
 header .band-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;
-  font-family:'Cinzel',serif;letter-spacing:.28em;font-size:13px;color:var(--gold);opacity:.9}
+  font-family:'OuroborosHand','Cinzel',serif;letter-spacing:.28em;font-size:13px;color:var(--gold);opacity:.9}
 
 .summary{display:flex;align-items:center;justify-content:center;gap:10px;padding:12px 16px;border-radius:16px;
   background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);margin-bottom:18px;font-size:14px}
