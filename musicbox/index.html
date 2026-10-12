@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0a0c12">
+<title>코라의 오르골 · Ouroboros</title>
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0c12;--ink:#C8CDD8;--mute:#8a90a0;--teal:#3fcfc4;--gold:#E0B04A;--line:rgba(224,176,74,.22)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:'Gowun Batang',serif;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(800px 480px at 50% 0%,rgba(63,207,196,.08),transparent 60%),var(--bg);text-align:center}
+main{max-width:520px;margin:0 auto;padding:8px 18px 64px}
+h1{font-family:'Cinzel','Gowun Batang',serif;letter-spacing:.12em;font-size:22px;margin:0 0 6px;text-shadow:0 0 16px rgba(63,207,196,.25)}
+.sub{color:var(--mute);font-size:13px;margin:0 0 22px}
+.box{position:relative;width:240px;height:170px;margin:0 auto 18px;border-radius:14px;background:linear-gradient(#6b4a2e,#3e2a19);border:1px solid rgba(224,176,74,.4);box-shadow:0 10px 30px rgba(0,0,0,.5),inset 0 0 18px rgba(0,0,0,.4);overflow:hidden}
+.cyl{position:absolute;left:34px;right:34px;top:48px;height:46px;border-radius:23px;background:repeating-linear-gradient(90deg,#d9c48a 0 2px,#b89a55 2px 9px);box-shadow:inset 0 -8px 12px rgba(0,0,0,.35)}
+.cyl.spin{animation:spin .5s linear infinite}@keyframes spin{to{background-position:-9px 0}}
+.comb{position:absolute;left:30px;right:30px;top:102px;height:30px;display:flex;gap:3px;justify-content:center}
+.comb i{flex:1;background:linear-gradient(#e8e4da,#9a968c);border-radius:0 0 2px 2px;transform-origin:top;transition:transform .08s}
+.comb i.hit{transform:scaleY(.82);background:linear-gradient(#fff,#3fcfc4)}
+.key{position:absolute;right:-2px;top:62px;width:16px;height:20px;background:var(--gold);border-radius:3px}
+.key.turn{animation:turn 1.2s linear infinite}@keyframes turn{50%{transform:scaleY(.2)}}
+button.wind{background:transparent;color:var(--teal);border:1px solid rgba(63,207,196,.45);border-radius:16px;padding:12px 26px;font:700 15px 'Gowun Batang',serif;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.note{margin:24px auto 0;max-width:420px;font-size:14px;line-height:1.8;color:var(--ink);background:rgba(18,22,32,.72);border:1px solid var(--line);border-left:2.5px solid var(--teal);border-radius:14px;padding:14px 16px;text-align:left}
+.note small{display:block;color:var(--mute);margin-top:8px;font-size:11.5px}
+.lang-sw button{font-family:'Cinzel','Gowun Batang',serif}
+/* topfix: shared "← 허브로" + KO|EN bar (same on every page) */
+.topfix.topfix{position:fixed!important;top:calc(env(safe-area-inset-top,0px) + 21px)!important;bottom:auto!important;z-index:1000!important;margin:0!important;box-sizing:border-box;height:44px;min-height:44px;display:inline-flex!important;align-items:center;gap:0;padding:0 14px!important;border-radius:22px;background:rgba(10,12,18,.72)!important;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14)!important;box-shadow:0 2px 10px rgba(0,0,0,.35);font:500 13px/1 'Gowun Batang','Noto Sans KR',system-ui,-apple-system,sans-serif!important;letter-spacing:.06em!important;color:#d8d4cc!important;text-decoration:none!important;text-shadow:none!important;-webkit-tap-highlight-color:transparent;transform:none!important}
+a.topfix.topfix{left:calc(env(safe-area-inset-left,0px) + 14px)!important;right:auto!important}
+div.topfix.topfix{right:calc(env(safe-area-inset-right,0px) + 14px)!important;left:auto!important;padding:0 4px!important}
+div.topfix.topfix button{min-width:44px;height:42px;padding:0 6px!important;margin:0;background:none;border:0!important;font:inherit!important;letter-spacing:inherit;color:#a9a5ae;cursor:pointer;text-shadow:none}
+div.topfix.topfix button[aria-pressed="true"]{color:#e6c766!important;text-decoration:underline dotted;text-underline-offset:4px}
+div.topfix.topfix .bar{opacity:.45;padding:0}
+a.topfix.topfix:hover,a.topfix.topfix:focus-visible{color:#fff!important}
+body{padding-top:calc(env(safe-area-inset-top,0px) + 79px)!important}
+</style>
+</head>
+<body>
+<a class="back topfix" href="../" data-i18n="toHub">← 허브로</a>
+<div class="lang-sw topfix" role="group" aria-label="Language / 언어"><button type="button" data-lang="ko" aria-pressed="true">KO</button><span class="bar">|</span><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+<main>
+  <h1 data-i18n="title">코라의 오르골</h1>
+  <p class="sub" data-i18n="sub">작업실 구석에서 고친 첫 번째 물건</p>
+  <div class="box" aria-hidden="true"><div class="cyl" id="cyl"></div><div class="comb" id="comb"></div><div class="key" id="key"></div></div>
+  <button class="wind" id="wind" type="button" data-i18n="wind">태엽 감기</button>
+  <div class="note"><span data-i18n="note">반쯤에서 늘 소리가 끊기던 오르골이야. 빠진 빗살 몇 개를 다시 깎아 끼우고 원통 핀을 바로 세웠더니, 이제 끝까지 울려. 오빠한테 제일 먼저 들려주고 싶었어.</span><small data-i18n="tip">곡: 브람스 자장가 · 아이폰은 무음 스위치를 끄고 들어 줘.</small></div>
+</main>
+<script>
+const T={ko:{toHub:'← 허브로',title:'코라의 오르골',sub:'작업실 구석에서 고친 첫 번째 물건',wind:'태엽 감기',stop:'멈추기',note:'반쯤에서 늘 소리가 끊기던 오르골이야. 빠진 빗살 몇 개를 다시 깎아 끼우고 원통 핀을 바로 세웠더니, 이제 끝까지 울려. 오빠한테 제일 먼저 들려주고 싶었어.',tip:'곡: 브람스 자장가 · 아이폰은 무음 스위치를 끄고 들어 줘.'},
+en:{toHub:'← Hub',title:"Cora's Music Box",sub:'The first thing I fixed in my workshop corner',wind:'Wind it up',stop:'Stop',note:'This music box always went quiet halfway through. I re-cut a few missing comb teeth and straightened the cylinder pins, and now it plays to the end. I wanted you to hear it first.',tip:"Tune: Brahms' Lullaby · On iPhone, turn the silent switch off."}};
+const LK='ouroboros-lang';let lang;try{lang=localStorage.getItem(LK)==='en'?'en':'ko'}catch(_){lang='ko'}
+function applyLang(){document.documentElement.lang=lang;document.querySelectorAll('[data-i18n]').forEach(e=>{const k=e.dataset.i18n;e.textContent=T[lang][k==='wind'&&playing?'stop':k]});document.querySelectorAll('[data-lang]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===lang))}
+document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;try{localStorage.setItem(LK,lang)}catch(_){}applyLang()});
+// Brahms Lullaby (public domain): [midi, beats]
+const M=[[64,.5],[64,.5],[67,2],[64,.5],[64,.5],[67,2],[64,.5],[67,.5],[72,1],[71,1.5],[69,.5],[69,1],[67,1],[62,.5],[64,.5],[65,1],[62,1],[62,.5],[64,.5],[65,2],[62,.5],[65,.5],[71,.5],[69,.5],[67,1],[71,1],[72,2],
+[60,.5],[60,.5],[72,2],[69,.5],[65,.5],[67,2],[64,.5],[60,.5],[65,1],[67,1],[69,1],[67,2],[60,.5],[60,.5],[72,2],[69,.5],[65,.5],[67,2],[64,.5],[60,.5],[65,1],[64,1],[62,1],[60,3]];
+const pitches=[...new Set(M.map(n=>n[0]))].sort((a,b)=>a-b),comb=document.getElementById('comb');
+pitches.forEach(()=>comb.appendChild(document.createElement('i')));
+let ctx,playing=false,timers=[],master;
+function tone(t,midi){const f=440*Math.pow(2,(midi-69)/12);[[1,1,1.6],[2.0,.3,.6],[5.4,.12,.25]].forEach(([m,a,d])=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=f*m;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(a*.22,t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(master);o.start(t);o.stop(t+d+.05)})}
+function stop(){playing=false;timers.forEach(clearTimeout);timers=[];if(master){master.gain.setTargetAtTime(0,ctx.currentTime,.05);}document.getElementById('cyl').classList.remove('spin');document.getElementById('key').classList.remove('turn');applyLang()}
+document.getElementById('wind').onclick=()=>{
+  if(playing){stop();return}
+  ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();
+  if(ctx.state==='suspended')ctx.resume();
+  // iOS unlock: a silent buffer inside the tap
+  const s=ctx.createBufferSource();s.buffer=ctx.createBuffer(1,1,22050);s.connect(ctx.destination);s.start(0);
+  master=ctx.createGain();master.gain.value=1;master.connect(ctx.destination);
+  playing=true;applyLang();document.getElementById('cyl').classList.add('spin');document.getElementById('key').classList.add('turn');
+  const beat=.42;let t=ctx.currentTime+.15,t0=t;
+  M.forEach(([m,d])=>{tone(t,m);const ti=pitches.indexOf(m),dl=(t-t0+.15)*1000;timers.push(setTimeout(()=>{const e=comb.children[ti];e.classList.add('hit');setTimeout(()=>e.classList.remove('hit'),140)},dl));t+=d*beat});
+  timers.push(setTimeout(stop,(t-t0+1.6)*1000));
+};
+applyLang();
+</script>
+</body>
+</html>
