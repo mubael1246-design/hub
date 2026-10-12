@@ -506,7 +506,7 @@ function xClose(fromPop){
 function xPaint(){
   const S=X.tabs, s=S.find(z=>z.id===xTab)||S[0], r=X.items[s.id]||{}, nm=z=>esc(z[lang]||z.ko);
   const day=d=>esc(String(d||'').replace(/-/g,'.'));
-  const log=(r.log||[]).map(e=>`<li${e.ev?' class="ev"':''}><time>${day(e.date)}</time><p>${esc(e.ev==='img'?xT('imgChanged'):e.text)}</p></li>`).join('');
+  const log=(r.log||[]).map(e=>`<li${e.ev?' class="ev"':''}><time>${day(e.date)}</time><p>${esc(e.ev==='img'?xT('imgChanged'):e.text)}</p>${e.img?`<figure class="nk-fig"><img src="${e.img}" alt="" loading="lazy" decoding="async"></figure>`:''}</li>`).join('');
   $('#nook').innerHTML=`<div class="nk-top"><button class="nk-back topfix" type="button" id="nkBack">${esc(xT('back'))}</button><div class="nk-title">${esc(xT('title'))}</div></div>
     <div class="nk-sub">${esc(xT('sub'))}</div>
     <div class="nk-tabs" role="tablist">${S.map(z=>`<button class="nk-tab" type="button" role="tab" data-id="${esc(z.id)}" aria-selected="${z.id===s.id}" style="--c:${esc(z.color)}"><span class="sw"></span>${nm(z)}</button>`).join('')}</div>
