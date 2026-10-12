@@ -169,6 +169,14 @@ input[type=password]:disabled,button.go:disabled{opacity:.45;cursor:not-allowed}
 .cafe .cf-mg{font-size:13px;font-variant-numeric:tabular-nums;color:var(--c,#E0B04A)}
 .cafe .cf-tx{margin:5px 0 0;font-size:13.5px;line-height:1.55}
 .cafe .cf-tx:empty{display:none}
+
+/* rooms view: back button = same fixed pill as every page's 허브로 bar */
+.topfix.topfix{position:fixed!important;top:calc(env(safe-area-inset-top,0px) + 21px)!important;bottom:auto!important;z-index:1000!important;margin:0!important;box-sizing:border-box;height:44px;min-height:44px;display:inline-flex!important;align-items:center;gap:0;padding:0 14px!important;border-radius:22px;background:rgba(10,12,18,.72)!important;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14)!important;box-shadow:0 2px 10px rgba(0,0,0,.35);font:500 13px/1 'Gowun Batang','Noto Sans KR',system-ui,-apple-system,sans-serif!important;letter-spacing:.06em!important;color:#d8d4cc!important;text-decoration:none!important;text-shadow:none!important;-webkit-tap-highlight-color:transparent;transform:none!important}
+button.topfix.topfix{left:calc(env(safe-area-inset-left,0px) + 14px)!important;right:auto!important;cursor:pointer}
+button.topfix.topfix:hover,button.topfix.topfix:focus-visible{color:#fff!important;outline:none}
+#nook{padding-top:calc(env(safe-area-inset-top,0px) + 51px)}
+#nook .nk-top{justify-content:center!important}
+#nook .nk-title{flex:none!important;margin:0 auto!important;text-align:center}
 </style>
 </head>
 <body>
@@ -499,7 +507,7 @@ function xPaint(){
   const S=X.tabs, s=S.find(z=>z.id===xTab)||S[0], r=X.items[s.id]||{}, nm=z=>esc(z[lang]||z.ko);
   const day=d=>esc(String(d||'').replace(/-/g,'.'));
   const log=(r.log||[]).map(e=>`<li${e.ev?' class="ev"':''}><time>${day(e.date)}</time><p>${esc(e.ev==='img'?xT('imgChanged'):e.text)}</p></li>`).join('');
-  $('#nook').innerHTML=`<div class="nk-top"><button class="nk-back" type="button" id="nkBack">${esc(xT('back'))}</button><div class="nk-title">${esc(xT('title'))}</div></div>
+  $('#nook').innerHTML=`<div class="nk-top"><button class="nk-back topfix" type="button" id="nkBack">${esc(xT('back'))}</button><div class="nk-title">${esc(xT('title'))}</div></div>
     <div class="nk-sub">${esc(xT('sub'))}</div>
     <div class="nk-tabs" role="tablist">${S.map(z=>`<button class="nk-tab" type="button" role="tab" data-id="${esc(z.id)}" aria-selected="${z.id===s.id}" style="--c:${esc(z.color)}"><span class="sw"></span>${nm(z)}</button>`).join('')}</div>
     <article class="nk-card" role="tabpanel" style="--c:${esc(s.color)}">
