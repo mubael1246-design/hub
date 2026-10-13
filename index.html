@@ -178,6 +178,17 @@ button.topfix.topfix:hover,button.topfix.topfix:focus-visible{color:#fff!importa
 #nook{padding-top:calc(env(safe-area-inset-top,0px) + 51px)}
 #nook .nk-top{justify-content:center!important}
 #nook .nk-title{flex:none!important;margin:0 auto!important;text-align:center}
+/* 오빠 손글씨 세 자매 이름 (암호문 안 벡터) — 한 획씩 그려지기 */
+#namesArt{color:#eadfc4;max-width:440px;margin:12px auto 2px;opacity:.9}
+.names-art{display:block;width:100%;height:auto;overflow:visible}
+.names-art path{fill:currentColor;fill-opacity:0;stroke:currentColor;stroke-width:12;stroke-linejoin:round;stroke-dasharray:1 1;stroke-dashoffset:1;
+  animation:nmDraw 1s cubic-bezier(.4,0,.2,1) forwards,nmFill .7s ease forwards;animation-delay:calc(var(--i)*45ms),calc(var(--i)*45ms + .75s)}
+@keyframes nmDraw{to{stroke-dashoffset:0}}
+@keyframes nmFill{to{fill-opacity:1}}
+.nk-plate{color:var(--pc);max-width:360px;margin:4px auto 14px;filter:drop-shadow(0 0 7px color-mix(in srgb,var(--pc) 45%,transparent))}
+.nk-plate .names-art path{animation:none;fill-opacity:1;stroke-dashoffset:0}
+.seal-nm{display:none}
+@media (prefers-reduced-motion:reduce){.names-art path{animation:none;fill-opacity:1;stroke-dashoffset:0}}
 </style>
 </head>
 <body>
@@ -213,6 +224,7 @@ button.topfix.topfix:hover,button.topfix.topfix:focus-visible{color:#fff!importa
       <div class="ring mini" aria-hidden="true"><img class="rails" src="assets/ring/rails.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r6" src="assets/ring/r6.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r5" src="assets/ring/r5.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r4" src="assets/ring/r4.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r3" src="assets/ring/r3.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r2" src="assets/ring/r2.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r1" src="assets/ring/r1.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"></div>
       <h1 class="title">OUROBOROS<span class="alch">🜸</span></h1>
       <div class="morse">--- ..- .-. --- -... --- .-. --- ...</div>
+      <div class="names-wrap" id="namesArt" hidden></div>
       <div class="sub" id="sub"></div>
       <div class="savings" id="savingsApp" hidden aria-live="polite"><span class="leaf-dot" aria-hidden="true"></span><span class="txt"></span></div>
     </header>
@@ -403,6 +415,7 @@ function showApp(){
     $('#artBg').style.backgroundImage=`url(${D.art})`;
     $('#artBand').style.backgroundImage=`url(${D.art})`;
   }
+  if(D.names){const n=$('#namesArt');n.innerHTML=D.names;n.hidden=false}
   enrich();
   loadLine();
   loadCafe();
@@ -512,6 +525,7 @@ function xPaint(){
     <div class="nk-sub">${esc(xT('sub'))}</div>
     <div class="nk-tabs" role="tablist">${S.map(z=>`<button class="nk-tab" type="button" role="tab" data-id="${esc(z.id)}" aria-selected="${z.id===s.id}" style="--c:${esc(z.color)}"><span class="sw"></span>${nm(z)}</button>`).join('')}</div>
     <article class="nk-card" role="tabpanel" style="--c:${esc(s.color)}">
+      ${D&&D.names?`<div class="nk-plate" style="--pc:${({nia:'#E0B04A',mina:'#B8405A',cora:'#3fcfc4'})[s.id]||'#eadfc4'}" aria-hidden="true">${D.names}</div>`:''}
       ${r.img?`<figure class="nk-fig"><img src="${r.img}" alt="${nm(s)}" decoding="async"></figure><div class="nk-cap"><b>${nm(s)}</b><span>${esc(xT('since')).replace('{d}',day(r.imgDate))}</span></div>`:''}
       ${log?`<ol class="nk-log">${log}</ol>`:`<p class="nk-empty">${esc(xT('empty'))}</p>`}
     </article>`;
