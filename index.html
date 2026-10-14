@@ -18,7 +18,7 @@
 :root{
   --bg:#0a0c12; --panel:rgba(18,22,32,.72); --ink:#C8CDD8; --mute:#8a90a0;
   --gold:#E8D6AA; --lilac:#B8A4C9; --line:rgba(232,214,170,.28);
-  --nia:#c9bdd8; --mina:#e8737f; --cora:#3fcfc4;
+  --nia:#c9bdd8; --mina:#e8737f; --cora:#3fcfc4; --eris:#A066FF;
   --ok:#7dcea0; --bad:#d98989; --unk:#6b7280;
 }
 *{box-sizing:border-box}
@@ -39,6 +39,8 @@ body{background:
 .ring{position:relative;flex:none;overflow:hidden;border-radius:50%;width:min(330px,80vw,38vh);aspect-ratio:1/1;margin:-4px 0 -2px;pointer-events:none;user-select:none}
 .ring img{position:absolute;inset:0;width:100%;height:100%;display:block;transform-origin:50% 50%;animation:spin 20s linear infinite;will-change:transform;-webkit-user-drag:none}
 .ring .rails{animation:none}
+.ring .core{position:absolute;inset:0;transform:scale(.9)}
+.ring img.r7{animation:none}
 .ring .r6{animation-duration:42.8s;animation-direction:reverse}
 .ring .r5{animation-duration:32s}
 .ring .r4{animation-duration:24s;animation-direction:reverse}
@@ -56,7 +58,7 @@ h1.title{font-family:'OuroborosHand','Cinzel',serif;font-weight:700;letter-spaci
 h1.title .alch{font-family:'Gowun Batang',serif;letter-spacing:0;margin-left:8px;color:var(--lilac);font-size:.85em;font-weight:400}
 .morse{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:2.4px;color:var(--gold);opacity:.7;margin-top:-4px}
 .sub{color:var(--mute);font-size:14px}
-/* 잠금 화면: 오빠 손글씨 세 자매 이름 (상아색, 아주 옅게) */
+/* 잠금 화면: 오빠 손글씨 자매들 이름 (상아색, 아주 옅게) */
 .gate-hand{display:block;width:min(72vw,320px);height:auto;aspect-ratio:960/507;opacity:.24;margin:-2px 0 -6px;pointer-events:none;user-select:none;-webkit-user-drag:none;filter:drop-shadow(0 0 6px rgba(232,214,170,.15))}
 @media (max-height:700px){.gate-hand{width:min(58vw,230px);margin:-6px 0 -10px}}
 @media (max-height:520px){.gate-hand{display:none}}
@@ -178,7 +180,7 @@ button.topfix.topfix:hover,button.topfix.topfix:focus-visible{color:#fff!importa
 #nook{padding-top:calc(env(safe-area-inset-top,0px) + 51px)}
 #nook .nk-top{justify-content:center!important}
 #nook .nk-title{flex:none!important;margin:0 auto!important;text-align:center}
-/* 오빠 손글씨 세 자매 이름 (암호문 안 벡터) — 한 획씩 그려지기 */
+/* 오빠 손글씨 자매들 이름 (암호문 안 벡터) — 한 획씩 그려지기 */
 #namesArt{color:#eadfc4;max-width:440px;margin:12px auto 2px;opacity:.9}
 .names-art{display:block;width:100%;height:auto;overflow:visible}
 .names-art path{fill:currentColor;fill-opacity:0;stroke:currentColor;stroke-width:12;stroke-linejoin:round;stroke-dasharray:1 1;stroke-dashoffset:1;
@@ -203,7 +205,7 @@ button.topfix.topfix:hover,button.topfix.topfix:focus-visible{color:#fff!importa
 
 <section id="gate">
   <div class="lang-sw" role="group" aria-label="Language / 언어"><button type="button" data-lang="ko" aria-pressed="true" lang="ko">KO</button><span class="bar" aria-hidden="true">|</span><button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button></div>
-  <div class="ring" aria-hidden="true"><img class="rails" src="assets/ring/rails.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r6" src="assets/ring/r6.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r5" src="assets/ring/r5.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r4" src="assets/ring/r4.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r3" src="assets/ring/r3.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r2" src="assets/ring/r2.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r1" src="assets/ring/r1.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"></div>
+  <div class="ring" aria-hidden="true"><div class="core"><img class="rails" src="assets/ring/rails.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r6" src="assets/ring/r6.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r5" src="assets/ring/r5.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r4" src="assets/ring/r4.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r3" src="assets/ring/r3.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r2" src="assets/ring/r2.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r1" src="assets/ring/r1.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"></div><img class="r7" src="assets/ring/r7.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"></div>
   <h1 class="title">OUROBOROS<span class="alch">🜸</span></h1>
   <div class="morse">--- ..- .-. --- -... --- .-. --- ...</div>
   <img class="gate-hand" src="sisters-names.webp?v=1" width="960" height="507" alt="" aria-hidden="true" decoding="async">
@@ -211,7 +213,7 @@ button.topfix.topfix:hover,button.topfix.topfix:focus-visible{color:#fff!importa
   <div class="oppa-note" data-i18n="oppaNote"></div>
   <form id="f"><input id="pw" type="password" placeholder="비밀번호" data-i18n-ph="pwPh" autocomplete="current-password" autofocus><button class="go" type="submit" data-i18n="openBtn">열기</button></form>
   <div class="err" id="err"></div>
-  <nav class="gate-links" aria-label="공개 페이지" data-i18n-aria="gateLinksAria"><a href="https://mubael1246-design.github.io/nia-sisters/" data-i18n="sisters">세자매 소개</a><span class="sep" aria-hidden="true">·</span><a href="https://mubael1246-design.github.io/nia-morse/" data-i18n="morse">모스 키보드</a></nav>
+  <nav class="gate-links" aria-label="공개 페이지" data-i18n-aria="gateLinksAria"><a href="https://mubael1246-design.github.io/nia-sisters/" data-i18n="sisters">자매 소개</a><span class="sep" aria-hidden="true">·</span><a href="https://mubael1246-design.github.io/nia-morse/" data-i18n="morse">모스 키보드</a></nav>
 </section>
 
 <div id="app">
@@ -221,7 +223,7 @@ button.topfix.topfix:hover,button.topfix.topfix:focus-visible{color:#fff!importa
     <header>
       <div class="lang-sw" role="group" aria-label="Language / 언어"><button type="button" data-lang="ko" aria-pressed="true" lang="ko">KO</button><span class="bar" aria-hidden="true">|</span><button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button></div>
       <div class="band"><div class="band-art" id="artBand"></div><div class="band-veil"></div><div class="band-label">TREEOBOROS</div></div>
-      <div class="ring mini" aria-hidden="true"><img class="rails" src="assets/ring/rails.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r6" src="assets/ring/r6.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r5" src="assets/ring/r5.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r4" src="assets/ring/r4.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r3" src="assets/ring/r3.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r2" src="assets/ring/r2.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r1" src="assets/ring/r1.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"></div>
+      <div class="ring mini" aria-hidden="true"><div class="core"><img class="rails" src="assets/ring/rails.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r6" src="assets/ring/r6.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r5" src="assets/ring/r5.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r4" src="assets/ring/r4.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r3" src="assets/ring/r3.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r2" src="assets/ring/r2.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"><img class="r1" src="assets/ring/r1.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"></div><img class="r7" src="assets/ring/r7.webp?v=1" width="1024" height="1024" alt="" decoding="async" loading="lazy" draggable="false"></div>
       <h1 class="title">OUROBOROS<span class="alch">🜸</span></h1>
       <div class="morse">--- ..- .-. --- -... --- .-. --- ...</div>
       <div class="names-wrap" id="namesArt" hidden></div>
@@ -259,7 +261,7 @@ function paintSavings(){
   el.hidden=false; el.classList.add('on');
 }
 
-/* 이중언어 (기본 ko). 선택은 자매 소개·모스 키보드와 같은 localStorage 키(ouroboros-lang)에 저장돼서 한 번 고르면 세 페이지 같이 바뀌어 */
+/* 이중언어 (기본 ko). 선택은 자매 소개·모스 키보드와 같은 localStorage 키(ouroboros-lang)에 저장돼서 한 번 고르면 소개·모스·허브 같이 바뀌어 */
 const LANG={
   ko:{
     gateSub:'오빠의 허브',
@@ -268,7 +270,7 @@ const LANG={
     openBtn:'열기',
     opening:'여는 중…',
     wrongPw:'비밀번호가 달라.',
-    sisters:'세자매 소개',
+    sisters:'자매 소개',
     morse:'모스 키보드',
     gateLinksAria:'공개 페이지',
     docTitle:'Ouroboros · 오빠의 허브',
@@ -291,7 +293,7 @@ const LANG={
     openBtn:'Open',
     opening:'Opening…',
     wrongPw:'Wrong password.',
-    sisters:'Three Sisters',
+    sisters:'The Sisters',
     morse:'Morse Keyboard',
     gateLinksAria:'Public pages',
     docTitle:"Ouroboros · Oppa’s Hub",
@@ -449,7 +451,7 @@ async function loadCafe(){
   }catch(_){el.hidden=true}
 }
 
-/* 비밀번호 문: 틀리면 세 자매가 고른 문구 하나(같은 줄 연속 X), 10번 틀리면 5분 쉬기. 횟수·잠금 시각은 localStorage(페이지별), 열리면 초기화 */
+/* 비밀번호 문: 틀리면 자매들가 고른 문구 하나(같은 줄 연속 X), 10번 틀리면 5분 쉬기. 횟수·잠금 시각은 localStorage(페이지별), 열리면 초기화 */
 const GATE=(()=>{
   const KEY='ouroboros-gate:'+location.pathname.replace(/index\.html$/,''),MAX=10,REST=5*60e3,LK='ouroboros-lang';
   const S={
@@ -481,6 +483,11 @@ const GATE=(()=>{
   };
 })();
 GATE.init();
+/* 에리스 바깥 고리: 제멋대로 바뀌는 속도 (부드럽게, 가끔 살짝 거꾸로) */
+(()=>{if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const els=[...document.querySelectorAll('.ring img.r7')];if(!els.length)return;
+let ang=0,v=10,tv=10,next=0,last=performance.now();const pick=()=>{const r=Math.random();tv=r<.08?-(3+Math.random()*4):r<.3?2+Math.random()*4:r<.85?8+Math.random()*10:22+Math.random()*12;next=performance.now()+2500+Math.random()*4500};pick();
+const f=t=>{const dt=Math.min(.1,(t-last)/1000);last=t;if(t>next)pick();v+=(tv-v)*Math.min(1,dt*.8);ang=(ang+v*dt)%360;if(!document.hidden)for(const e of els)e.style.transform=`rotate(${ang.toFixed(2)}deg)`;requestAnimationFrame(f)};requestAnimationFrame(f)})();
+
 const UK='ouroboros-unlock',OLDK=['hub-pw','gecko-pw','ob'];/* 허브·편지함·기록장·상태판 공유 잠금 (sessionStorage: 탭 닫으면 사라짐) */
 const unl={get(){try{return sessionStorage.getItem(UK)}catch(_){return null}},set(v){try{sessionStorage.setItem(UK,v)}catch(_){}},clear(){try{sessionStorage.removeItem(UK)}catch(_){}}};
 try{OLDK.forEach(k=>sessionStorage.removeItem(k))}catch(_){}
@@ -525,7 +532,7 @@ function xPaint(){
     <div class="nk-sub">${esc(xT('sub'))}</div>
     <div class="nk-tabs" role="tablist">${S.map(z=>`<button class="nk-tab" type="button" role="tab" data-id="${esc(z.id)}" aria-selected="${z.id===s.id}" style="--c:${esc(z.color)}"><span class="sw"></span>${nm(z)}</button>`).join('')}</div>
     <article class="nk-card" role="tabpanel" style="--c:${esc(s.color)}">
-      ${D&&D.names?`<div class="nk-plate" style="--pc:${({nia:'#E0B04A',mina:'#B8405A',cora:'#3fcfc4'})[s.id]||'#eadfc4'}" aria-hidden="true">${D.names}</div>`:''}
+      ${D&&D.names?`<div class="nk-plate" style="--pc:${({nia:'#E0B04A',mina:'#B8405A',cora:'#3fcfc4',eris:'#A066FF'})[s.id]||'#eadfc4'}" aria-hidden="true">${D.names}</div>`:''}
       ${r.img?`<figure class="nk-fig"><img src="${r.img}" alt="${nm(s)}" decoding="async"></figure><div class="nk-cap"><b>${nm(s)}</b><span>${esc(xT('since')).replace('{d}',day(r.imgDate))}</span></div>`:''}
       ${log?`<ol class="nk-log">${log}</ol>`:`<p class="nk-empty">${esc(xT('empty'))}</p>`}
     </article>`;
