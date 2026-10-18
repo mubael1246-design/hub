@@ -54,6 +54,10 @@ header .upd{font-size:11px;color:var(--mute);margin-top:6px;font-variant-numeric
 .sec.now li .dot{animation:pulse 2.4s ease-in-out infinite}
 @keyframes pulse{50%{opacity:.2}}
 .sec.done li .t{color:var(--mute)}
+.sec.today h2 .td{font-size:11.5px;color:var(--mute);font-weight:400;font-variant-numeric:tabular-nums}
+.sec.today h2 .td.old{color:#d9b779}
+.sec.today li .ck{flex:none;color:var(--teal);font-size:15px;line-height:1;transform:translateY(1px)}
+.sec.today li.on .t{color:var(--mute);text-decoration:line-through;text-decoration-color:rgba(46,196,182,.35)}
 .desc{margin:0 0 6px;font-size:13px;color:var(--mute);line-height:1.55}
 .empty{font-size:12.5px;color:var(--mute);opacity:.7;font-style:italic;margin:4px 0 0}
 footer{text-align:center;color:var(--mute);font-size:12px;margin-top:24px}
@@ -92,8 +96,8 @@ body{padding-top:calc(env(safe-area-inset-top,0px) + 79px)!important}
 </main></div>
 <script>
 const LANG={
- ko:{title:'코라의 작업실',gateSub:'오빠의 허브 · 잠긴 방',pwPh:'비밀번호',openBtn:'열기',opening:'여는 중…',toHub:'← 허브로',foot:'짓는 사람은 천천히, 대신 끝까지',lockBtn:'잠그기',docTitle:'코라의 작업실 · Ouroboros',updated:'갱신',empty:'아직 비어 있어.'},
- en:{title:'Cora’s Workshop',gateSub:'Oppa’s Hub · locked room',pwPh:'Password',openBtn:'Open',opening:'Opening…',toHub:'← Hub',foot:'A builder goes slowly, but all the way',lockBtn:'Lock',docTitle:'Cora’s Workshop · Ouroboros',updated:'Updated',empty:'Nothing here yet.'}
+ ko:{title:'코라의 작업실',gateSub:'오빠의 허브 · 잠긴 방',pwPh:'비밀번호',openBtn:'열기',opening:'여는 중…',toHub:'← 허브로',foot:'짓는 사람은 천천히, 대신 끝까지',lockBtn:'잠그기',docTitle:'코라의 작업실 · Ouroboros',updated:'갱신',empty:'아직 비어 있어.',today:'오늘 할 일',stale:'지난 목록'},
+ en:{title:'Cora’s Workshop',gateSub:'Oppa’s Hub · locked room',pwPh:'Password',openBtn:'Open',opening:'Opening…',toHub:'← Hub',foot:'A builder goes slowly, but all the way',lockBtn:'Lock',docTitle:'Cora’s Workshop · Ouroboros',updated:'Updated',empty:'Nothing here yet.',today:'Today',stale:'old list'}
 };
 const LK='ouroboros-lang';
 const readLang=()=>{try{return localStorage.getItem(LK)==='en'?'en':'ko'}catch(_){return 'ko'}};
@@ -118,11 +122,20 @@ async function decrypt(pw,file='workshop.enc.json'){
 let W=null;
 const ORDER=['now','asked','planned','want','counsel','done'];
 const day=d=>esc(String(d||'').slice(5).replace('-','.'));
+const kstToday=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+function todaySec(){
+  const T=W.today;if(!T||!Array.isArray(T.items))return '';
+  const L=(W.labels||{}).today||{},lab=L[lang]||L.ko||t('today');
+  const old=T.date&&T.date!==kstToday(),done=T.items.filter(x=>x.done).length;
+  const dl=T.date?`<span class="td${old?' old':''}">${esc(T.date.replace(/-/g,'.'))}${old?` · ${esc(t('stale'))}`:''}</span>`:'';
+  const rows=T.items.map(x=>`<li class="${x.done?'on':''}"><span class="ck">${x.done?'☑':'☐'}</span><span class="t">${esc(x.t)}</span></li>`).join('');
+  return `<section class="sec today"><h2>${esc(lab)}<span class="n">${done}/${T.items.length}</span>${dl}</h2>${rows?`<ul>${rows}</ul>`:`<p class="empty">${esc(t('empty'))}</p>`}</section>`;
+}
 function render(){
   if(!W)return;
   const L=W.labels||{};
   $('#upd').textContent=W.updated?`${t('updated')} ${W.updated.slice(0,16).replace('T',' ').replace(/-/g,'.')} KST`:'';
-  $('#secs').innerHTML=ORDER.map(s=>{
+  $('#secs').innerHTML=todaySec()+ORDER.map(s=>{
     let it=W.items.filter(x=>x.section===s);
     if(s==='done') it=it.sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,12);
     const lab=(L[s]||{})[lang]||(L[s]||{}).ko||s;
