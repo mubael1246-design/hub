@@ -424,6 +424,8 @@ function showApp(){
   enrich();
   loadLine();
   loadCafe();
+  /* 우리 집 평면도 → 자매 방 탭 (sessionStorage ouroboros-nk-tab) */
+  try{const t=sessionStorage.getItem('ouroboros-nk-tab');if(t){sessionStorage.removeItem('ouroboros-nk-tab');xOpen(t)}}catch(_){}
 }
 /* 코라의 한마디: 따로 암호화된 작은 파일. 없거나 실패하면 조용히 숨김 */
 async function loadLine(){
@@ -491,7 +493,7 @@ GATE.init();
 let ang=0,v=10,tv=10,next=0,last=performance.now();const pick=()=>{const r=Math.random();tv=r<.08?-(3+Math.random()*4):r<.3?2+Math.random()*4:r<.85?8+Math.random()*10:22+Math.random()*12;next=performance.now()+2500+Math.random()*4500};pick();
 const f=t=>{const dt=Math.min(.1,(t-last)/1000);last=t;if(t>next)pick();v+=(tv-v)*Math.min(1,dt*.8);ang=(ang+v*dt)%360;if(!document.hidden)for(const e of els)e.style.transform=`rotate(${ang.toFixed(2)}deg)`;requestAnimationFrame(f)};requestAnimationFrame(f)})();
 
-const UK='ouroboros-unlock',OLDK=['hub-pw','gecko-pw','ob'];/* 허브·편지함·기록장·상태판 공유 잠금 (sessionStorage: 탭 닫으면 사라짐) */
+const UK='ouroboros-unlock',OLDK=['hub-pw','gecko-pw','ob'];/* 허브·편지함·기록장·상태판·우리집 공유 잠금 (sessionStorage: 탭 닫으면 사라짐) */
 const unl={get(){try{return sessionStorage.getItem(UK)}catch(_){return null}},set(v){try{sessionStorage.setItem(UK,v)}catch(_){}},clear(){try{sessionStorage.removeItem(UK)}catch(_){}}};
 try{OLDK.forEach(k=>sessionStorage.removeItem(k))}catch(_){}
 async function unlock(pv,silent){
@@ -512,14 +514,15 @@ $('#lock').onclick=()=>{unl.clear();location.reload()};
 /* 🜸 (footer) — extra view, encrypted, loaded on demand */
 let X=null,xTab=null,xBusy=false;
 const xT=k=>{const U=X&&X.ui||{};return (U[lang]||U.ko||{})[k]??(U.ko||{})[k]??''};
-async function xOpen(){
+async function xOpen(tab){
   if(xBusy) return; const k=unl.get(); if(!k) return; xBusy=true;
   try{
     if(!X){X=await decrypt(k,'leaf.enc.json');
       if(X.css){const st=document.createElement('style');st.textContent=X.css;document.head.appendChild(st)}}
   }catch(_){xBusy=false;X=null;return}
   xBusy=false;
-  xTab=xTab||X.tabs[0].id; xPaint();
+  if(tab&&X.tabs.some(z=>z.id===tab)) xTab=tab;
+  else xTab=xTab||X.tabs[0].id; xPaint();
   $('main').classList.add('nk-on'); $('#nook').hidden=false; scrollTo(0,0);
   if(!(history.state&&history.state.nk)) history.pushState({nk:1},'');
 }

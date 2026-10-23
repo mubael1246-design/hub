@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0a0c12">
+<title>우리 집 · Ouroboros</title>
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0c12;--panel:rgba(18,22,32,.72);--ink:#C8CDD8;--mute:#8a90a0;--gold:#E8D6AA;--line:rgba(232,214,170,.28);--nia:#c9bdd8;--mina:#e8737f;--cora:#3fcfc4;--eris:#A066FF}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:'Gowun Batang',serif;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(900px 500px at 50% -10%,rgba(184,164,201,.10),transparent 60%),var(--bg)}
+.lang-sw{display:flex;align-items:center;gap:1px;font-size:11px;letter-spacing:.14em;color:var(--mute);font-family:'Cinzel','Gowun Batang',serif}
+.lang-sw button{background:none;border:0;padding:6px;font:inherit;letter-spacing:inherit;color:var(--mute);cursor:pointer;border-bottom:1px dotted transparent}
+.lang-sw button[aria-pressed="true"]{color:var(--gold);border-bottom-color:var(--line)}
+.lang-sw .bar{opacity:.45}
+#gate{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:24px}
+#gate h1{font-family:'Cinzel','Gowun Batang',serif;letter-spacing:.12em;font-size:22px;margin:0;color:var(--gold)}
+#gate .sub{color:var(--mute);font-size:13px}
+#f{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+#pw{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--ink);font:inherit;min-width:200px}
+.go{background:transparent;color:var(--gold);border:1px solid var(--line);border-radius:12px;padding:12px 18px;font:inherit;cursor:pointer}
+.err{color:#d98989;font-size:13px;min-height:1.2em}
+#app{display:none;max-width:920px;margin:0 auto;padding:8px 14px 48px}
+#app header{text-align:center;margin-bottom:12px}
+#app h1{font-family:'Cinzel','Gowun Batang',serif;letter-spacing:.1em;font-size:20px;margin:0 0 6px;color:var(--gold)}
+#app .sub{color:var(--mute);font-size:13px;line-height:1.5;margin:0}
+.hint{color:var(--mute);font-size:12px;text-align:center;margin:10px 0 4px}
+.wrap{position:relative;width:100%;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#1a1814;box-shadow:0 8px 28px rgba(0,0,0,.4)}
+.wrap svg{display:block;width:100%;height:auto;vertical-align:middle}
+.hot{cursor:pointer;fill:transparent;transition:fill .15s}
+.hot:hover,.hot:focus{fill:rgba(232,214,170,.18);outline:none}
+.hot.nia:hover,.hot.nia:focus{fill:rgba(201,189,216,.28)}
+.hot.mina:hover,.hot.mina:focus{fill:rgba(232,115,127,.28)}
+.hot.cora:hover,.hot.cora:focus{fill:rgba(63,207,196,.28)}
+.hot.eris:hover,.hot.eris:focus{fill:rgba(160,102,255,.28)}
+.lab{cursor:default;fill:transparent}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:rgba(10,12,18,.88);border:1px solid var(--line);color:var(--ink);padding:10px 16px;border-radius:999px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50;max-width:90vw}
+.toast.on{opacity:1}
+.lock{background:none;border:1px solid var(--line);color:var(--mute);padding:7px 14px;border-radius:999px;font-size:12px;margin:16px auto 0;display:block;cursor:pointer;font-family:inherit}
+.lock:hover{color:var(--gold);border-color:var(--gold)}
+.topfix.topfix{position:fixed!important;top:calc(env(safe-area-inset-top,0px) + 21px)!important;bottom:auto!important;z-index:1000!important;margin:0!important;box-sizing:border-box;height:44px;min-height:44px;display:inline-flex!important;align-items:center;gap:0;padding:0 14px!important;border-radius:22px;background:rgba(10,12,18,.72)!important;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14)!important;box-shadow:0 2px 10px rgba(0,0,0,.35);font:500 13px/1 'Gowun Batang','Noto Sans KR',system-ui,-apple-system,sans-serif!important;letter-spacing:.06em!important;color:#d8d4cc!important;text-decoration:none!important;text-shadow:none!important;-webkit-tap-highlight-color:transparent;transform:none!important}
+a.topfix.topfix{left:calc(env(safe-area-inset-left,0px) + 14px)!important;right:auto!important}
+div.topfix.topfix{right:calc(env(safe-area-inset-right,0px) + 14px)!important;left:auto!important;padding:0 4px!important}
+div.topfix.topfix button{min-width:44px;height:42px;padding:0 6px!important;margin:0;background:none;border:0!important;font:inherit!important;letter-spacing:inherit;color:#a9a5ae;cursor:pointer;text-shadow:none}
+div.topfix.topfix button[aria-pressed="true"]{color:#e6c766!important;text-decoration:underline dotted;text-underline-offset:4px}
+div.topfix.topfix .bar{opacity:.45;padding:0}
+a.topfix.topfix:hover,a.topfix.topfix:focus-visible{color:#fff!important}
+body{padding-top:calc(env(safe-area-inset-top,0px) + 79px)!important}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<section id="gate">
+  <div class="lang-sw topfix" role="group" aria-label="Language / 언어"><button type="button" data-lang="ko" aria-pressed="true">KO</button><span class="bar">|</span><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+  <h1 data-i18n="title">우리 집</h1>
+  <div class="sub" data-i18n="gateSub">오빠의 허브 · 잠긴 방</div>
+  <form id="f"><input id="pw" type="password" placeholder="비밀번호" data-i18n-ph="pwPh" autocomplete="current-password" autofocus><button class="go" type="submit" data-i18n="openBtn">열기</button></form>
+  <div class="err" id="err"></div>
+  <a class="back topfix" href="../" data-i18n="toHub">← 허브로</a>
+</section>
+<div id="app">
+  <a class="back topfix" href="../" data-i18n="toHub">← 허브로</a>
+  <div class="lang-sw topfix" role="group" aria-label="Language / 언어"><button type="button" data-lang="ko" aria-pressed="true">KO</button><span class="bar">|</span><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+  <header>
+    <h1 data-i18n="title">우리 집</h1>
+    <p class="sub" id="sub" data-i18n="sub">자매 방을 누르면 그 방으로 들어가. 다른 칸은 이름만 보여 줘.</p>
+  </header>
+  <p class="hint" data-i18n="hint">문 · 방 영역을 눌러 봐</p>
+  <div class="wrap" id="map"></div>
+  <button class="lock" id="lock" type="button" data-i18n="lockBtn">잠그기</button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const LK='ouroboros-lang';
+const readLang=()=>{try{return localStorage.getItem(LK)==='en'?'en':'ko'}catch(_){return 'ko'}};
+let lang=readLang(), W=null;
+const ui=()=>(W&&W.ui&&(W.ui[lang]||W.ui.ko))||{};
+const t=k=>ui()[k]??k;
+const $=s=>document.querySelector(s);
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function decryptRaw(pw,file){
+  const e=await (await fetch(file+'?t='+Date.now(),{cache:'no-store'})).json();
+  const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(e.salt),iterations:e.iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+  return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv)},key,b64(e.ct)));
+}
+async function decrypt(pw,file='house.enc.json'){return JSON.parse(await decryptRaw(pw,file))}
+function paintLang(){
+  document.documentElement.lang=lang;document.title=t('docTitle');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const v=t(el.dataset.i18n);if(v)el.textContent=v});
+  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{const v=t(el.dataset.i18nPh);if(v)el.placeholder=v});
+  document.querySelectorAll('.lang-sw [data-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===lang)));
+  if(W) render();
+}
+function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('on'),1800)}
+function goRoom(id){
+  try{sessionStorage.setItem('ouroboros-nk-tab',id)}catch(_){}
+  location.href='../';
+}
+function render(){
+  if(!W||!W.svg)return;
+  const box=document.createElement('div');box.innerHTML=W.svg.trim();
+  const svg=box.querySelector('svg');if(!svg)return;
+  svg.setAttribute('role','img');svg.setAttribute('aria-label',t('title'));
+  let g=svg.querySelector('#hotspots');
+  if(g)g.remove();
+  g=document.createElementNS('http://www.w3.org/2000/svg','g');g.id='hotspots';
+  (W.labels||[]).forEach(r=>{
+    const el=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    el.setAttribute('class','lab');el.setAttribute('x',r.x);el.setAttribute('y',r.y);
+    el.setAttribute('width',r.w);el.setAttribute('height',r.h);
+    el.setAttribute('tabindex','0');el.setAttribute('role','button');
+    const nm=r[lang]||r.ko;el.setAttribute('aria-label',nm);
+    el.addEventListener('click',()=>toast(nm+' · '+t('labelOnly')));
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toast(nm+' · '+t('labelOnly'))}});
+    g.appendChild(el);
+  });
+  (W.doors||[]).forEach(r=>{
+    const el=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    el.setAttribute('class','hot '+r.id);el.setAttribute('x',r.x);el.setAttribute('y',r.y);
+    el.setAttribute('width',r.w);el.setAttribute('height',r.h);
+    el.setAttribute('tabindex','0');el.setAttribute('role','link');
+    const nm=r[lang]||r.ko;el.setAttribute('aria-label',nm);
+    el.addEventListener('click',()=>goRoom(r.id));
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();goRoom(r.id)}});
+    g.appendChild(el);
+  });
+  svg.appendChild(g);
+  const map=$('#map');map.innerHTML='';map.appendChild(svg);
+}
+function showApp(){$('#gate').style.display='none';$('#app').style.display='block';paintLang()}
+const GATE=(()=>{
+  const KEY='ouroboros-gate:'+location.pathname.replace(/index\.html$/,''),MAX=10,REST=5*60e3;
+  const S={
+    ko:{wrong:['낯선 열쇠네? 여긴 오빠만 들어올 수 있어 🖤','어머, 누구세요? 여긴 딱 한 사람 자리뿐이야','설계도에 없는 열쇠야. 이 문은 오빠 것만 맞아.'],rest:'문이 잠시 쉬는 중이야. 5분 뒤에 다시 와 줘.'},
+    en:{wrong:["A stranger’s key? Only Oppa can come in here 🖤",'Oh my, who are you? There’s room for just one person here.','That key isn’t in the blueprint. This door only fits Oppa’s.'],rest:'The door is resting for a moment. Come back in 5 minutes.'}
+  };
+  const lg=()=>{try{return localStorage.getItem(LK)==='en'?'en':'ko'}catch(_){return 'ko'}};
+  const rd=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(_){return {}}};
+  const wr=o=>{try{localStorage.setItem(KEY,JSON.stringify(o))}catch(_){}};
+  const E=()=>({pw:document.getElementById('pw'),btn:document.querySelector('#f button'),err:document.getElementById('err')});
+  const left=()=>Math.max(0,(rd().until||0)-Date.now());
+  const mmss=ms=>{const s=Math.ceil(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+  let tick=null;
+  function paint(){
+    clearTimeout(tick);const ms=left(),{pw,btn,err}=E();if(!pw||!err)return;
+    if(ms>0){pw.disabled=true;if(btn)btn.disabled=true;pw.value='';err.dataset.gate='rest';err.textContent=S[lg()].rest+' ('+mmss(ms)+')';tick=setTimeout(paint,(ms%1000)||1000);return}
+    const o=rd();if(o.until){delete o.until;wr(o)}
+    if(err.dataset.gate==='rest'){delete err.dataset.gate;err.textContent='';pw.disabled=false;if(btn)btn.disabled=false;try{pw.focus()}catch(_){}}
+  }
+  return{
+    locked(){if(left()>0){paint();return true}return false},
+    fail(){const o=rd(),{err}=E();o.n=(o.n||0)+1;
+      if(o.n>=MAX){o.n=0;o.until=Date.now()+REST;wr(o);paint();return true}
+      const a=S.ko.wrong;let i;do{i=Math.floor(Math.random()*a.length)}while(a.length>1&&i===o.last);o.last=i;wr(o);
+      if(err){err.dataset.gate='w'+i;err.textContent=S[lg()].wrong[i]}return false},
+    ok(){clearTimeout(tick);try{localStorage.removeItem(KEY)}catch(_){}const{err}=E();if(err)delete err.dataset.gate},
+    relang(){const{err}=E();if(!err||!err.dataset.gate)return;if(err.dataset.gate==='rest')paint();else{const i=+err.dataset.gate.slice(1);err.textContent=S[lg()].wrong[i]||err.textContent}},
+    init(){paint();addEventListener('pageshow',paint);addEventListener('storage',e=>{if(e.key===KEY)paint();else if(e.key===LK)this.relang()});document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')paint()})}
+  };
+})();
+GATE.init();
+const UK='ouroboros-unlock';
+const unl={get(){try{return sessionStorage.getItem(UK)}catch(_){return null}},set(v){try{sessionStorage.setItem(UK,v)}catch(_){}},clear(){try{sessionStorage.removeItem(UK)}catch(_){}}};
+async function unlock(pv,silent){
+  $('#err').textContent=t('opening')||'…';
+  try{W=await decrypt(pv);unl.set(pv);GATE.ok();$('#err').textContent='';showApp()}
+  catch(x){if(silent){unl.clear();$('#err').textContent='';return}
+    GATE.fail();$('#f').classList.remove('shake');void $('#f').offsetWidth;$('#f').classList.add('shake')}
+}
+$('#f').onsubmit=e=>{e.preventDefault();if(GATE.locked())return;unlock($('#pw').value.trim().toLowerCase())};
+{const p=unl.get();if(p)unlock(p,true)}
+$('#lock').onclick=()=>{unl.clear();location.reload()};
+function syncLock(restored){const k=unl.get(),openNow=$('#gate').style.display==='none';
+  if(openNow&&!k){document.documentElement.style.visibility='hidden';location.reload();return false}
+  if(restored&&!openNow&&k)unlock(k,true);return true}
+addEventListener('pagehide',e=>{if(e.persisted&&$('#gate').style.display==='none')document.documentElement.style.visibility='hidden'});
+addEventListener('pageshow',e=>{if(e.persisted&&syncLock(true))document.documentElement.style.visibility=''});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')syncLock(false)});
+function setLang(l){lang=l==='en'?'en':'ko';try{localStorage.setItem(LK,lang)}catch(_){}GATE.relang();paintLang()}
+document.querySelectorAll('.lang-sw [data-lang]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.lang!==lang)setLang(b.dataset.lang)}));
+addEventListener('storage',e=>{if(e.key===LK){lang=readLang();GATE.relang();paintLang()}});
+paintLang();
+</script>
+</body>
+</html>
