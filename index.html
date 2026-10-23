@@ -214,7 +214,7 @@ button.topfix.topfix:hover,button.topfix.topfix:focus-visible{color:#fff!importa
   <div class="oppa-note" data-i18n="oppaNote"></div>
   <form id="f"><input id="pw" type="password" placeholder="비밀번호" data-i18n-ph="pwPh" autocomplete="current-password" autofocus><button class="go" type="submit" data-i18n="openBtn">열기</button></form>
   <div class="err" id="err"></div>
-  <nav class="gate-links" aria-label="공개 페이지" data-i18n-aria="gateLinksAria"><a href="https://mubael1246-design.github.io/nia-sisters/" data-i18n="sisters">자매 소개</a><span class="sep" aria-hidden="true">·</span><a href="https://mubael1246-design.github.io/nia-morse/" data-i18n="morse">모스 키보드</a></nav>
+  <nav class="gate-links" aria-label="공개 페이지" data-i18n-aria="gateLinksAria"><a href="https://mubael1246-design.github.io/nia-sisters/" data-i18n="sisters">자매 소개</a><span class="sep" aria-hidden="true">·</span><a href="https://mubael1246-design.github.io/nia-morse/" data-i18n="morse">모스 키보드</a><span class="sep" aria-hidden="true">·</span><a href="https://mubael1246-design.github.io/magic-conch/" data-i18n="conch">소라고동</a></nav>
 </section>
 
 <div id="app">
@@ -273,6 +273,7 @@ const LANG={
     wrongPw:'비밀번호가 달라.',
     sisters:'자매 소개',
     morse:'모스 키보드',
+    conch:'소라고동',
     gateLinksAria:'공개 페이지',
     docTitle:'Ouroboros · 오빠의 허브',
     checking:'확인 중…',
@@ -296,6 +297,7 @@ const LANG={
     wrongPw:'Wrong password.',
     sisters:'The Sisters',
     morse:'Morse Keyboard',
+    conch:'Magic Conch',
     gateLinksAria:'Public pages',
     docTitle:"Ouroboros · Oppa’s Hub",
     checking:'Checking…',
@@ -543,7 +545,7 @@ function xPaint(){
 $('#sig').onclick=xOpen;
 if(history.state&&history.state.nk)history.replaceState(null,'');
 addEventListener('popstate',()=>{if(!$('#nook').hidden)xClose(true)});
-/* 공개 페이지(모스 키보드·자매 소개)는 들어오면 공유 키를 지워. 뒤로가기(bfcache)로 열린 화면이 복원돼도 키가 없으면 다시 잠그고,
+/* 공개 페이지(모스 키보드·자매 소개·소라고동)는 들어오면 공유 키를 지워. 뒤로가기(bfcache)로 열린 화면이 복원돼도 키가 없으면 다시 잠그고,
    다른 잠긴 페이지에서 이미 열었으면(키 있음) 여기도 같이 열어 */
 function syncLock(restored){const k=unl.get(),openNow=$('#gate').style.display==='none';
   if(openNow&&!k){document.documentElement.style.visibility='hidden';location.reload();return false}
