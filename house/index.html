@@ -52,6 +52,14 @@ div.topfix.topfix button[aria-pressed="true"]{color:#e6c766!important;text-decor
 div.topfix.topfix .bar{opacity:.45;padding:0}
 a.topfix.topfix:hover,a.topfix.topfix:focus-visible{color:#fff!important}
 body{padding-top:calc(env(safe-area-inset-top,0px) + 79px)!important}
+
+.log{margin:22px 0 4px;padding:16px 16px 12px;border-radius:14px;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(6px)}
+.log h2{font-family:'Cinzel','Gowun Batang',serif;letter-spacing:.1em;font-size:15px;margin:0 0 4px;color:var(--gold);font-weight:500}
+.log .log-sub{color:var(--mute);font-size:12px;margin:0 0 12px;line-height:1.45}
+.log ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.log li{font-size:13px;line-height:1.55;color:var(--ink);padding:8px 10px;border-radius:10px;background:rgba(10,12,18,.35);border:1px solid rgba(232,214,170,.12)}
+.log li .when{color:var(--gold);opacity:.85;font-variant-numeric:tabular-nums}
+.log .empty{color:var(--mute);font-size:13px;padding:6px 2px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -73,6 +81,11 @@ body{padding-top:calc(env(safe-area-inset-top,0px) + 79px)!important}
   </header>
   <p class="hint" data-i18n="hint">문 · 방 영역을 눌러 봐</p>
   <div class="wrap" id="map"></div>
+  <section class="log" id="presence-log" aria-labelledby="log-title">
+    <h2 id="log-title" data-i18n="logTitle">공용 위치 로그</h2>
+    <p class="log-sub" data-i18n="logSub">누가 어디에 있었는지 · 대략 시각 · 사실·겹침만</p>
+    <ul id="log-list"></ul>
+  </section>
   <button class="lock" id="lock" type="button" data-i18n="lockBtn">잠그기</button>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -104,6 +117,20 @@ function goRoom(id){
   try{sessionStorage.setItem('ouroboros-nk-tab',id)}catch(_){}
   location.href='../';
 }
+function renderLog(){
+  const list=$('#log-list');if(!list)return;
+  const rows=Array.isArray(W&&W.log)?W.log:[];
+  if(!rows.length){list.innerHTML='<li class="empty">'+esc(t('logEmpty'))+'</li>';return}
+  list.innerHTML=rows.map(line=>{
+    const s=String(line);
+    const i=s.indexOf(' · ');
+    if(i>0){
+      const when=s.slice(0,i), rest=s.slice(i+3);
+      return '<li><span class="when">'+esc(when)+'</span> · '+esc(rest)+'</li>';
+    }
+    return '<li>'+esc(s)+'</li>';
+  }).join('');
+}
 function render(){
   if(!W||!W.svg)return;
   const box=document.createElement('div');box.innerHTML=W.svg.trim();
@@ -134,6 +161,7 @@ function render(){
   });
   svg.appendChild(g);
   const map=$('#map');map.innerHTML='';map.appendChild(svg);
+  renderLog();
 }
 function showApp(){$('#gate').style.display='none';$('#app').style.display='block';paintLang()}
 const GATE=(()=>{
