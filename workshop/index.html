@@ -144,7 +144,7 @@ function render(){
       const dt=s==='done'&&x.date?`<span class="dt">${day(x.date)}</span>`:'';
       return `<li><span class="dot"></span><span class="t">${esc(x.title)}${x.note?`<span class="note">${esc(x.note)}</span>`:''}</span>${st}${dt}</li>`}).join('');
     const desc=s==='counsel'&&W.counselDesc?`<p class="desc">${esc(W.counselDesc[lang]||W.counselDesc.ko)}</p>`:'';
-    return `<section class="sec ${s}"><h2>${esc(lab)}<span class="n">${it.length}</span></h2>${desc}${rows?`<ul>${rows}</ul>`:`<p class="empty">${esc(t('empty'))}</p>`}</section>`;
+    return `<section class="sec ${s}"><h2>${esc(lab)}<span class="n">${it.length}</span></h2>${desc}${rows?`<ul>${rows}</ul>`:(s==='counsel'?'':`<p class="empty">${esc(t('empty'))}</p>`)}</section>`;
   }).join('');
 }
 function showApp(){$('#gate').style.display='none';$('#app').style.display='block';render()}
