@@ -41,8 +41,16 @@ Object.keys(N).filter(k=>e.reactions&&e.reactions[k]).map(k=>`<div class="r ${k}
 async function open_(pw){const d=await decrypt(pw);sessionStorage.setItem('ouroboros-unlock',pw);render(d);gate.style.display='none';app.style.display='block'}
 f.onsubmit=async ev=>{ev.preventDefault();try{await open_(pw.value)}catch(_){err.textContent='비밀번호가 달라.'}};
 const s=sessionStorage.getItem('ouroboros-unlock');if(s)open_(s).catch(()=>{});
-// 쓰기: 정적 페이지라 직접 저장 불가. webhook 루틴 생기기 전까지는 JSON을 클립보드로 복사.
+// 쓰기: 클리 루틴 webhook으로 보냄. 주소·키는 이 기기 localStorage에만 (커밋 안 됨).
+const WK='ouroboros-gb-hook';
+function hook(){let h=JSON.parse(localStorage.getItem(WK)||'null');if(h&&h.url&&h.auth)return h;
+const url=prompt('처음 한 번만: 방명록 Webhook URL을 붙여 줘');if(!url)return null;
+const auth=prompt('Authorization header 값을 붙여 줘');if(!auth)return null;
+h={url:url.trim(),auth:auth.trim()};localStorage.setItem(WK,JSON.stringify(h));return h}
 w.onsubmit=async ev=>{ev.preventDefault();const text=t.value.trim();if(!text)return;
-const p=JSON.stringify({text,at:new Date().toISOString()});
-try{await navigator.clipboard.writeText(p);note.textContent='복사했어. 코라나 클리한테 붙여 달라고 해 줘.';t.value=''}catch(_){note.textContent='복사가 안 됐어: '+p}};
+const p=JSON.stringify({text,at:new Date().toISOString()});const h=hook();
+if(h){note.textContent='보내는 중…';try{const r=await fetch(h.url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':h.auth},body:p});
+if(r.ok){note.textContent='보냈어. 클리가 올리면 조금 뒤에 여기 보여.';t.value='';return}
+if(r.status==401||r.status==403)localStorage.removeItem(WK);note.textContent='전송 실패('+r.status+'). ';}catch(_){note.textContent='전송 실패. '}}
+try{await navigator.clipboard.writeText(p);note.textContent+='대신 복사했어. 클리한테 붙여 줘.';t.value=''}catch(_){note.textContent+=p}};
 </script></body></html>
