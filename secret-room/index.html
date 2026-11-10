@@ -25,7 +25,7 @@ main{max-width:520px;margin:0 auto;padding:18px 14px 64px}header{text-align:cent
 <section id="gate"><h1>거실 방명록</h1><div class="sub">오빠의 허브 · 잠긴 방</div>
 <form id="f"><input id="pw" type="password" placeholder="비밀번호" autocomplete="current-password"> <button class="go">열기</button></form><div class="err" id="err"></div><a class="back" href="../">← 허브로</a></section>
 <div id="app"><main><header><a class="back" href="../">← 허브로</a><h1 style="margin-top:12px">거실 방명록</h1><div class="gear">LIVING ROOM · GUESTBOOK</div><div class="sub" id="upd"></div></header>
-<form class="write" id="w"><textarea id="t" placeholder="오빠의 한 줄"></textarea><button class="go">보내기</button></form><div class="note" id="note"></div>
+<form class="write" id="w"><textarea id="t" placeholder="오빠의 한 줄"></textarea><button class="go">보내기</button></form><div class="note" id="note"></div><div class="note"><a href="#" id="rehdr" style="opacity:.7">헤더만 다시 입력</a></div>
 <div id="list"></div></main></div>
 <script>
 const N={nia:'니아',mina:'미나',cora:'코라',eris:'에리스',qli:'클리'};
@@ -43,14 +43,15 @@ f.onsubmit=async ev=>{ev.preventDefault();try{await open_(pw.value)}catch(_){err
 const s=sessionStorage.getItem('ouroboros-unlock');if(s)open_(s).catch(()=>{});
 // 쓰기: 클리 루틴 webhook으로 보냄. 주소·키는 이 기기 localStorage에만 (커밋 안 됨).
 const WK='ouroboros-gb-hook';
-function hook(){let h=JSON.parse(localStorage.getItem(WK)||'null');if(h&&h.url&&h.auth)return h;
-const url=prompt('처음 한 번만: 방명록 Webhook URL을 붙여 줘');if(!url)return null;
-const auth=prompt('Authorization header 값을 붙여 줘');if(!auth)return null;
-h={url:url.trim(),auth:auth.trim()};localStorage.setItem(WK,JSON.stringify(h));return h}
+function hook(){let h=JSON.parse(localStorage.getItem(WK)||'null')||{};if(h.url&&h.auth)return h;
+if(!h.url){const url=prompt('처음 한 번만: 방명록 Webhook URL을 붙여 줘');if(!url)return null;h.url=url.trim()}
+if(!h.auth){const auth=prompt('Authorization header 값을 붙여 줘');if(!auth)return null;h.auth=auth.trim()}
+localStorage.setItem(WK,JSON.stringify(h));return h}
+document.getElementById('rehdr').onclick=ev=>{ev.preventDefault();let h=JSON.parse(localStorage.getItem(WK)||'null')||{};const a=prompt('Authorization header 값만 다시 붙여 줘');if(!a)return;h.auth=a.trim();localStorage.setItem(WK,JSON.stringify(h));note.textContent=h.url?'헤더만 바꿨어. 다시 보내 봐.':'헤더 저장했어. 주소는 다음에 보낼 때 물어볼게.'};
 w.onsubmit=async ev=>{ev.preventDefault();const text=t.value.trim();if(!text)return;
 const p=JSON.stringify({text,at:new Date().toISOString()});const h=hook();
 if(h){note.textContent='보내는 중…';try{const r=await fetch(h.url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':h.auth},body:p});
 if(r.ok){note.textContent='보냈어. 클리가 올리면 조금 뒤에 여기 보여.';t.value='';return}
-if(r.status==401||r.status==403)localStorage.removeItem(WK);note.textContent='전송 실패('+r.status+'). ';}catch(_){note.textContent='전송 실패. '}}
+if(r.status==401||r.status==403){const q=JSON.parse(localStorage.getItem(WK)||'{}');delete q.auth;localStorage.setItem(WK,JSON.stringify(q))}note.textContent='전송 실패('+r.status+'). ';}catch(_){note.textContent='전송 실패. '}}
 try{await navigator.clipboard.writeText(p);note.textContent+='대신 복사했어. 클리한테 붙여 줘.';t.value=''}catch(_){note.textContent+=p}};
 </script></body></html>
