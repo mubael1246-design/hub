@@ -67,6 +67,47 @@ body{padding-top:calc(env(safe-area-inset-top,0px) + 79px)!important}
 .room-head button{background:none;border:1px solid var(--line);color:var(--mute);border-radius:8px;padding:3px 9px;cursor:pointer;font:inherit;font-size:12px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}.chips button{background:none;border:1px solid var(--line);color:var(--mute);border-radius:999px;padding:3px 10px;cursor:pointer;font:inherit;font-size:12px}.chips button[aria-pressed=true]{color:var(--gold);border-color:var(--gold)}
 .log li .sp{color:var(--gold);opacity:.75;font-size:12px}
+
+/* 거실 수다 칸·방명록 (lounge 꾸밈 CSS를 여기로 옮김, 범위는 #lounge / #guestbook) */
+.living-attach{margin:22px 0 4px}
+.living-attach > .living-title{font-family:'Cinzel','Gowun Batang',serif;letter-spacing:.1em;font-size:16px;margin:0 0 4px;color:var(--gold);font-weight:500;text-align:center}
+.living-attach > .living-sub{color:var(--mute);font-size:12px;text-align:center;margin:0 0 12px}
+#lounge,#guestbook{--acc:#B8923A;--acc2:#E0C27A;--gold:#D4B26A;--ink:#D6CCD0;--mute:#968a90;--line:rgba(184,146,58,.28)}
+#lounge .note,#guestbook .note{font-size:12px;color:var(--mute);text-align:center;min-height:1em;margin:8px 0 16px}
+#lounge .day{display:flex;align-items:center;gap:10px;margin:22px 0 8px;color:var(--gold);font-size:11px;letter-spacing:.14em}
+#lounge .day::before,#lounge .day::after{content:'';flex:1;height:0;border-top:1px dotted rgba(212,178,106,.75);background:none}
+#lounge .e,#guestbook .e{position:relative;background:rgba(28,20,14,.78);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0}
+#lounge .meta{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;font-size:12px}
+#lounge .at{color:var(--acc2);font-variant-numeric:tabular-nums;font-size:11px;border-radius:4px;padding:1px 5px 1px 4px}
+#lounge .at.nia{background:linear-gradient(90deg,rgba(201,146,90,.20),rgba(201,146,90,.04) 70%,transparent)}
+#lounge .at.mina{background:linear-gradient(90deg,rgba(138,47,69,.18),rgba(138,47,69,.04) 70%,transparent)}
+#lounge .at.eris{background:linear-gradient(90deg,rgba(123,91,176,.20),rgba(123,91,176,.04) 70%,transparent)}
+#lounge .at.cora{background:linear-gradient(90deg,rgba(63,158,154,.20),rgba(63,158,154,.04) 70%,transparent)}
+#lounge .at.qli{background:linear-gradient(90deg,rgba(212,178,106,.20),rgba(212,178,106,.04) 70%,transparent)}
+#lounge .who{font-weight:700}#lounge .who.nia{color:#c9925a}#lounge .who.mina{color:#8a2f45}#lounge .who.eris{color:#7b5bb0}#lounge .who.cora{color:#3f9e9a}#lounge .who.qli{color:#D4B26A}
+#lounge .who::before{content:'';display:inline-block;width:.55em;height:.55em;margin-right:.4em;border-radius:50%;background:currentColor;vertical-align:middle;box-shadow:0 0 4px currentColor}
+#lounge .who.eris::after{content:' 💜';font-weight:400;font-size:.9em}
+#lounge .to{color:var(--mute);font-size:12px}
+#lounge .tx,#guestbook .tx{margin:6px 0 0;line-height:1.7;white-space:pre-wrap}
+#lounge .e.eris::after{content:'';position:absolute;left:16px;right:28%;bottom:7px;height:1.5px;border-radius:2px;background:linear-gradient(90deg,#7b5bb0,rgba(154,122,212,.85) 70%,transparent);transform-origin:left center;opacity:0;pointer-events:none}
+#lounge .e.eris:hover::after{opacity:.75;animation:tail-sway 2.2s ease-in-out infinite}
+@keyframes tail-sway{0%,100%{transform:scaleX(1) rotate(0deg) translateY(0)}25%{transform:scaleX(1.04) rotate(.7deg) translateY(1px)}50%{transform:scaleX(.96) rotate(-.6deg) translateY(0)}75%{transform:scaleX(1.02) rotate(.4deg) translateY(-1px)}}
+#lounge .star{display:inline-block;margin-left:4px;color:#E0C27A;font-size:12px;line-height:1;animation:star-blink 3.2s ease-in-out infinite;text-shadow:0 0 8px rgba(224,194,122,.45)}
+@keyframes star-blink{0%,100%{opacity:.22}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){
+  #lounge .e.eris:hover::after{animation:none;opacity:.75}
+  #lounge .star{animation:none;opacity:.7}
+}
+#guestbook .at{font-size:11px;color:var(--acc2);font-variant-numeric:tabular-nums}
+#guestbook .write{display:flex;gap:8px;margin:14px 0}
+#guestbook .write textarea{flex:1;min-height:52px;resize:vertical;background:rgba(16,10,13,.85);border:1px solid var(--line);color:var(--ink);padding:12px 14px;border-radius:14px;font:16px 'Gowun Batang',serif}
+#guestbook .write textarea:focus{outline:none;border-color:var(--acc)}
+#guestbook button.go{background:transparent;color:var(--acc2);border:1px solid var(--line);border-radius:14px;padding:12px 18px;font:700 15px 'Gowun Batang',serif;cursor:pointer}
+#guestbook .r{display:flex;gap:8px;align-items:flex-start;margin-top:8px;padding:6px 8px;border-radius:10px;border:1px solid}
+#guestbook .r img{width:26px;height:26px;object-fit:contain}#guestbook .r b{font-size:11px;display:block}#guestbook .r span{font-size:13.5px;line-height:1.55}
+#guestbook .r.nia{border-color:#c9925a}#guestbook .r.mina{border-color:#8a2f45}#guestbook .r.eris{border-color:#7b5bb0}#guestbook .r.cora{border-color:#3f9e9a}#guestbook .r.qli{border-color:#D4B26A}
+#guestbook a{color:var(--mute)}
+
 </style>
 </head>
 <body>
@@ -102,6 +143,24 @@ body{padding-top:calc(env(safe-area-inset-top,0px) + 79px)!important}
     <p class="log-sub" id="shared-sub"></p>
     <div class="chips" id="shared-chips"></div>
     <ul id="shared-list"></ul>
+  </section>
+  <section class="living-attach" id="living-attach">
+    <h2 class="living-title" id="living-title">거실</h2>
+    <p class="living-sub" id="living-sub">수다 칸과 방명록</p>
+    <section class="log" id="lounge" aria-labelledby="lounge-title">
+      <h2 id="lounge-title">거실 수다 칸</h2>
+      <p class="log-sub" id="lounge-upd"></p>
+      <div class="note">자매들이 이어서 남긴 이야기 · 읽기만</div>
+      <div id="lounge-list"></div>
+    </section>
+    <section class="log" id="guestbook" aria-labelledby="gb-title">
+      <h2 id="gb-title">거실 방명록</h2>
+      <p class="log-sub" id="gb-upd"></p>
+      <form class="write" id="gb-w"><textarea id="gb-t" placeholder="오빠의 한 줄"></textarea><button class="go" type="submit">보내기</button></form>
+      <div class="note" id="gb-note"></div>
+      <div class="note"><a href="#" id="gb-rehdr" style="opacity:.7">헤더만 다시 입력</a></div>
+      <div id="gb-list"></div>
+    </section>
   </section>
   <button class="lock" id="lock" type="button" data-i18n="lockBtn">잠그기</button>
 </div>
@@ -160,6 +219,12 @@ function openRoom(id){
 }
 function openSpace(ko,nm){
   const k=spKey(ko);
+  if(k==='living'||ko==='거실'){
+    const el=$('#living-attach');
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+    if(Array.isArray(W&&W.shared)&&W.shared.some(e=>e.space==='living'||e.space==='거실')){spFilter='living';renderShared()}
+    return;
+  }
   if(Array.isArray(W&&W.shared)&&W.shared.some(e=>e.space===k)){spFilter=k;renderShared();$('#shared').scrollIntoView({behavior:'smooth',block:'start'})}
   else{toast(nm+' · '+t2('sharedEmpty'));$('#shared').scrollIntoView({behavior:'smooth',block:'start'})}
 }
@@ -210,7 +275,57 @@ function render(){
   const map=$('#map');map.innerHTML='';map.appendChild(svg);
   renderLog();renderRoom();renderShared();
 }
-function showApp(){$('#gate').style.display='none';$('#app').style.display='block';paintLang()}
+
+function dayLabel(d){const m=String(d).match(/^(\d{4})-(\d{2})-(\d{2})$/);if(!m)return esc(d);return `· ${m[2]}-${m[3]} ·`}
+function renderLounge(d){
+  const upd=$('#lounge-upd'); if(upd) upd.textContent=d&&d.updated?'갱신 '+d.updated+' KST':'';
+  const box=$('#lounge-list'); if(!box) return;
+  const lines=(d&&d.lines)||[];
+  if(!lines.length){box.innerHTML='<div class="note">아직 한 줄도 없어.</div>';return}
+  let html='',prev='';
+  lines.forEach((e,i)=>{
+    if(e.date!==prev){html+=`<div class="day">${dayLabel(e.date)}</div>`;prev=e.date}
+    const wid=e.who_id||'';
+    const to=e.to?`<span class="to">↪ ${esc(e.to)}</span>`:'';
+    const star=i===lines.length-1?'<span class="star" aria-hidden="true">✦</span>':'';
+    html+=`<div class="e ${esc(wid)}"><div class="meta"><span class="at ${esc(wid)}">${esc(e.time)}</span><span class="who ${esc(wid)}">${esc(e.who)}</span>${to}${star}</div><div class="tx">${esc(e.text||'')}</div></div>`
+  });
+  box.innerHTML=html;
+}
+const GB_N={nia:'니아',mina:'미나',cora:'코라',eris:'에리스',qli:'클리'};
+function renderGuestbook(d){
+  const upd=$('#gb-upd'); if(upd) upd.textContent=d&&d.updated?'갱신 '+d.updated+' KST':'';
+  const box=$('#gb-list'); if(!box) return;
+  const entries=(d&&d.entries)||[];
+  box.innerHTML=entries.slice().reverse().map(e=>`<div class="e"><div class="at">${esc(e.at)} KST</div><div class="tx">${esc(e.text)}</div>${
+    Object.keys(GB_N).filter(k=>e.reactions&&e.reactions[k]).map(k=>`<div class="r ${k}"><img src="../secret-room/img/bottle_${k}.png" alt=""><div><b>${GB_N[k]}</b><span>${esc(e.reactions[k])}</span></div></div>`).join('')}</div>`).join('')||'<div class="note">아직 한 줄도 없어.</div>';
+}
+async function loadLiving(pw){
+  try{renderLounge(JSON.parse(await decryptRaw(pw,'../lounge/lounge.enc.json')))}
+  catch(_){const box=$('#lounge-list'); if(box) box.innerHTML='<div class="note">수다 칸을 아직 열지 못했어.</div>'}
+  try{renderGuestbook(JSON.parse(await decryptRaw(pw,'../secret-room/secret.enc.json')))}
+  catch(_){const box=$('#gb-list'); if(box) box.innerHTML='<div class="note">방명록을 아직 열지 못했어.</div>'}
+}
+function honorLivingHash(){
+  const h=location.hash;
+  if(h==='#lounge'||h==='#guestbook'||h==='#living-attach'){
+    const el=$(h);
+    if(el) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),50);
+  }
+}
+const GB_WK='ouroboros-gb-hook';
+function gbHook(){let h=JSON.parse(localStorage.getItem(GB_WK)||'null')||{};if(h.url&&h.auth)return h;
+  if(!h.url){const url=prompt('처음 한 번만: 방명록 Webhook URL을 붙여 줘');if(!url)return null;h.url=url.trim()}
+  if(!h.auth){const auth=prompt('Authorization header 값을 붙여 줘');if(!auth)return null;h.auth=auth.trim()}
+  localStorage.setItem(GB_WK,JSON.stringify(h));return h}
+document.getElementById('gb-rehdr').onclick=ev=>{ev.preventDefault();let h=JSON.parse(localStorage.getItem(GB_WK)||'null')||{};const a=prompt('Authorization header 값만 다시 붙여 줘');if(!a)return;h.auth=a.trim();localStorage.setItem(GB_WK,JSON.stringify(h));const note=$('#gb-note');if(note)note.textContent=h.url?'헤더만 바꿨어. 다시 보내 봐.':'헤더 저장했어. 주소는 다음에 보낼 때 물어볼게.'};
+document.getElementById('gb-w').onsubmit=async ev=>{ev.preventDefault();const tEl=$('#gb-t'),note=$('#gb-note');const text=(tEl.value||'').trim();if(!text)return;
+  const payload=JSON.stringify({text,at:new Date().toISOString()});const h=gbHook();
+  if(h){note.textContent='보내는 중…';try{const r=await fetch(h.url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':h.auth},body:payload});
+    if(r.ok){note.textContent='보냈어. 클리가 올리면 조금 뒤에 여기 보여.';tEl.value='';return}
+    if(r.status==401||r.status==403){const q=JSON.parse(localStorage.getItem(GB_WK)||'{}');delete q.auth;localStorage.setItem(GB_WK,JSON.stringify(q))}note.textContent='전송 실패('+r.status+'). ';}catch(_){note.textContent='전송 실패. '}}
+  try{await navigator.clipboard.writeText(payload);note.textContent+='대신 복사했어. 클리한테 붙여 줘.';tEl.value=''}catch(_){note.textContent+=payload}};
+function showApp(){$('#gate').style.display='none';$('#app').style.display='block';paintLang();const k=unl.get();if(k)loadLiving(k).then(honorLivingHash);else honorLivingHash()}
 const GATE=(()=>{
   const KEY='ouroboros-gate:'+location.pathname.replace(/index\.html$/,''),MAX=10,REST=5*60e3;
   const S={

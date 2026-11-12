@@ -7,8 +7,8 @@
 <meta name="theme-color" content="#0a0c12">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Ouroboros">
-<title>Ouroboros · 오빠의 허브</title>
+<meta name="apple-mobile-web-app-title" content="System hub-Qliphoth">
+<title>System hub-Qliphoth</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -78,7 +78,31 @@ button.go:hover{border-color:var(--gold);background:rgba(232,214,170,.08);color:
 @media (min-height:600px){.gate-links{position:absolute;left:0;right:0;bottom:calc(18px + env(safe-area-inset-bottom));margin-top:0}}
 
 /* app — art as faint inverted background */
-#app{display:none;position:relative;z-index:1;min-height:100vh}
+#app{display:none;position:relative;z-index:1;min-height:100vh;overflow:visible}
+/* 크레·커피잔: 잠금 화면은 장식만, 연 뒤 메인은 버튼 */
+.deco-gecko,.deco-cup,.btn-gecko,.btn-cup{position:absolute;z-index:6;width:44px;height:44px;padding:0;background:none;border:0;line-height:0;color:var(--gold)}
+.deco-gecko,.deco-cup{pointer-events:none}
+.btn-gecko,.btn-cup{cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent}
+.btn-gecko:focus-visible,.btn-cup:focus-visible{outline:1px dotted var(--gold);outline-offset:3px;border-radius:10px}
+.btn-gecko[hidden],.btn-cup[hidden]{display:none!important}
+.deco-gecko svg,.btn-gecko svg,.deco-cup svg,.btn-cup svg{width:100%;height:100%;display:block;overflow:visible}
+.deco-gecko,.btn-gecko{top:-2px;right:auto;left:50%;transform:translateX(-50%) rotate(-22deg) translateY(-18%);filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}
+.deco-cup{top:calc(12px + env(safe-area-inset-top,0px));left:max(12px,env(safe-area-inset-left,0px));right:auto;opacity:.85}
+.btn-cup{position:relative;display:inline-flex;width:40px;height:40px;margin:4px auto 16px;top:auto;left:auto;right:auto;transform:none;filter:none}
+#cupWrap{text-align:center}
+#app.view-home #cupWrap{display:block}
+#app:not(.view-home) #cupWrap{display:none}
+#coraLine.off-view{display:none!important}
+#hubHome{display:none;max-width:520px;margin:0 auto 18px;padding:0 2px}
+#app.view-home #hubHome{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#app.view-home #list,#app.view-home #sum{display:none}
+#hubBack{display:none;margin:0 auto 14px;background:none;border:0;color:var(--mute);font:inherit;font-size:13px;cursor:pointer;border-bottom:1px dotted var(--line);padding:0}
+#app.view-list #hubBack{display:inline-block}
+.hub-tile{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px 16px 16px;color:var(--ink);font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.hub-tile:hover,.hub-tile:focus-visible{border-color:var(--gold);outline:none}
+.hub-tile .tl{display:block;font-family:'Cinzel','Gowun Batang',serif;letter-spacing:.12em;font-size:16px;color:var(--gold);margin-bottom:6px}
+.hub-tile .td{display:block;font-size:12.5px;color:var(--mute);line-height:1.45}
+@media (max-width:420px){#app.view-home #hubHome{grid-template-columns:1fr}}
 .art-layer{position:fixed;inset:0;z-index:0;pointer-events:none;background-position:center;background-size:cover;background-repeat:no-repeat;
   filter:invert(1) hue-rotate(250deg) saturate(1.15) brightness(.95);
   opacity:.16}
@@ -205,6 +229,8 @@ button.topfix.topfix:hover,button.topfix.topfix:focus-visible{color:#fff!importa
 </svg>
 
 <section id="gate">
+  <div class="deco-gecko" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none" stroke="#E8D6AA" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 6c4 0 6 3 6 6s-2 5-2 8 3 6 2 10-5 5-7 4"/><path d="M14 10c-3-2-6-1-7 1M26 10c3-2 6-1 7 1M17 22c-4 0-7 2-8 5M24 22c4 0 7 2 8 5"/><circle cx="17" cy="9" r="1.2" fill="#E8D6AA"/><circle cx="23" cy="9" r="1.2" fill="#E8D6AA"/></svg></div>
+  <div class="deco-cup" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none" stroke="#E8D6AA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 16h15c0 7.5-2.8 14-7.5 14S11 23.5 11 16z"/><path d="M26 18.5h3.2a3.4 3.4 0 0 1 0 6.8H25"/><path d="M15 8c0 2 1 3 2 4M19 7c0 2 1 3 2 4M23 8c0 2 1 3 2 4"/></svg></div>
   <div class="lang-sw" role="group" aria-label="Language / 언어"><button type="button" data-lang="ko" aria-pressed="true" lang="ko">KO</button><span class="bar" aria-hidden="true">|</span><button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button></div>
   <div class="ring" aria-hidden="true"><div class="core"><img class="rails" src="assets/ring/rails.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r6" src="assets/ring/r6.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r5" src="assets/ring/r5.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r4" src="assets/ring/r4.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r3" src="assets/ring/r3.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r2" src="assets/ring/r2.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r1" src="assets/ring/r1.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"><img class="r0" src="assets/ring/r0.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"></div><img class="r7" src="assets/ring/r7.webp?v=1" width="1024" height="1024" alt="" decoding="async" draggable="false"></div>
   <h1 class="title">OUROBOROS<span class="alch">🜸</span></h1>
@@ -218,6 +244,7 @@ button.topfix.topfix:hover,button.topfix.topfix:focus-visible{color:#fff!importa
 </section>
 
 <div id="app">
+  <a class="btn-gecko" id="geckoBtn" href="#" hidden></a>
   <div class="art-layer" id="artBg"></div>
   <div class="art-vignette"></div>
   <main>
@@ -232,7 +259,12 @@ button.topfix.topfix:hover,button.topfix.topfix:focus-visible{color:#fff!importa
       <div class="savings" id="savingsApp" hidden aria-live="polite"><span class="leaf-dot" aria-hidden="true"></span><span class="txt"></span></div>
     </header>
     <section class="cora-line" id="coraLine" hidden aria-label="코라의 한마디"><div class="cl-lb" data-i18n="coraLine">코라의 한마디</div><p class="cl-tx" lang="ko"></p><time class="cl-dt"></time></section>
-    <a class="cafe" id="cafeCard" href="caffeine/" hidden aria-label="니아의 카페인"><div class="cf-row"><span class="cf-lb" data-i18n="cafe">니아의 카페인 · 오늘</span><span class="cf-mg"></span></div><p class="cf-tx" lang="ko"></p></a>
+    <button type="button" class="hub-back" id="hubBack" data-i18n="backTiles">← 처음 화면</button>
+    <div id="hubHome">
+      <button type="button" class="hub-tile" id="tilePublic"><span class="tl" data-i18n="tilePublic">공개</span><span class="td" data-i18n="tilePublicDesc">누구나 열 수 있는 페이지</span></button>
+      <button type="button" class="hub-tile" id="tilePrivate"><span class="tl" data-i18n="tilePrivate">비공개</span><span class="td" data-i18n="tilePrivateDesc">잠긴 방들</span></button>
+    </div>
+    <div id="cupWrap"><a class="btn-cup" id="cafeBtn" href="#" hidden></a></div>
     <div class="summary" id="sum"><span class="dot" style="--c:var(--unk)"></span><span data-i18n="checking">확인 중…</span></div>
     <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
     <div id="list"></div>
@@ -265,7 +297,7 @@ function paintSavings(){
 /* 이중언어 (기본 ko). 선택은 자매 소개·모스 키보드와 같은 localStorage 키(ouroboros-lang)에 저장돼서 한 번 고르면 소개·모스·허브 같이 바뀌어 */
 const LANG={
   ko:{
-    gateSub:'오빠의 허브',
+    gateSub:'System hub-Qliphoth',
     oppaNote:'',
     pwPh:'비밀번호',
     openBtn:'열기',
@@ -275,7 +307,7 @@ const LANG={
     morse:'모스 키보드',
     conch:'소라고동',
     gateLinksAria:'공개 페이지',
-    docTitle:'Ouroboros · 오빠의 허브',
+    docTitle:'System hub-Qliphoth',
     checking:'확인 중…',
     checkingPages:'페이지 상태 확인 중…',
     allOk:'모두 괜찮아 · {n}개 페이지',
@@ -286,10 +318,13 @@ const LANG={
     lockBtn:'잠그기',
     savings:'절감 모드 · {n}일째',
     coraLine:'코라의 한마디',
-    cafe:'니아의 카페인 · 오늘'
+    cafe:'니아의 카페인 · 오늘',
+    tilePublic:'공개', tilePrivate:'비공개',
+    tilePublicDesc:'누구나 열 수 있는 페이지', tilePrivateDesc:'잠긴 방들',
+    backTiles:'← 처음 화면'
   },
   en:{
-    gateSub:"Oppa’s Hub",
+    gateSub:"System hub-Qliphoth",
     oppaNote:"Oppa — what we call him",
     pwPh:'Password',
     openBtn:'Open',
@@ -299,7 +334,7 @@ const LANG={
     morse:'Morse Keyboard',
     conch:'Magic Conch',
     gateLinksAria:'Public pages',
-    docTitle:"Ouroboros · Oppa’s Hub",
+    docTitle:"System hub-Qliphoth",
     checking:'Checking…',
     checkingPages:'Checking pages…',
     allOk:'All good · {n} pages',
@@ -310,7 +345,10 @@ const LANG={
     lockBtn:'Lock',
     savings:'Savings mode · day {n}',
     coraLine:'A word from Cora',
-    cafe:'Nia’s caffeine · today'
+    cafe:'Nia’s caffeine · today',
+    tilePublic:'Public', tilePrivate:'Private',
+    tilePublicDesc:'Pages anyone can open', tilePrivateDesc:'Locked rooms',
+    backTiles:'← Home'
   }
 };
 const LK='ouroboros-lang';
@@ -373,9 +411,37 @@ async function lastCommit(repo, path){
   }catch(_){ return null }
 }
 
+const GECKO_SVG=c=>`<svg viewBox="0 0 40 40" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 6c4 0 6 3 6 6s-2 5-2 8 3 6 2 10-5 5-7 4"/><path d="M14 10c-3-2-6-1-7 1M26 10c3-2 6-1 7 1M17 22c-4 0-7 2-8 5M24 22c4 0 7 2 8 5"/><circle cx="17" cy="9" r="1.2" fill="${c}"/><circle cx="23" cy="9" r="1.2" fill="${c}"/></svg>`;
+const CUP_SVG=c=>`<svg viewBox="0 0 40 40" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 16h15c0 7.5-2.8 14-7.5 14S11 23.5 11 16z"/><path d="M26 18.5h3.2a3.4 3.4 0 0 1 0 6.8H25"/><path d="M15 8c0 2 1 3 2 4M19 7c0 2 1 3 2 4M23 8c0 2 1 3 2 4"/></svg>`;
+function listed(){return (D&&D.pages||[]).filter(p=>p.list!==false)}
+function pageById(id){return (D&&D.pages||[]).find(p=>p.id===id)}
+function pageUrl(id){return (pageById(id)||{}).url||''}
+function pagesIn(group){return listed().filter(p=>(p.group||(p.locked?'private':'public'))===group)}
+let hubView='home';
+function wireIconLinks(){
+  const gold=getComputedStyle(document.documentElement).getPropertyValue('--gold').trim()||'#E8D6AA';
+  const g=$('#geckoBtn'), c=$('#cafeBtn');
+  const gu=pageUrl('gecko-log'), cu=pageUrl('caffeine');
+  if(g){g.innerHTML=GECKO_SVG(gold); if(gu){g.href=gu;g.hidden=false;g.setAttribute('aria-label',(pageById('gecko-log')||{}).name||'루시·루나 기록장')} }
+  if(c){c.innerHTML=CUP_SVG(gold); if(cu){c.href=cu;c.hidden=false;c.setAttribute('aria-label',(pageById('caffeine')||{}).name||'니아의 카페인 기록장')} }
+}
+function setHubView(v){
+  hubView=v==='public'||v==='private'?v:'home';
+  const app=$('#app');
+  app.classList.toggle('view-home',hubView==='home');
+  app.classList.toggle('view-list',hubView!=='home');
+  app.classList.toggle('view-private',hubView==='private');
+  const cl=$('#coraLine');
+  if(cl) cl.classList.toggle('off-view',hubView!=='private');
+  if(hubView==='home'){try{if(location.hash) history.replaceState(null,'',location.pathname+location.search)}catch(_){}}
+  else {try{history.replaceState(null,'','#'+hubView)}catch(_){}}
+  if(D) renderCards();
+}
+
 function renderCards(){
   const makers=D.makers||{};
-  $('#list').innerHTML=D.pages.map(p=>{
+  const pages=hubView==='public'?pagesIn('public'):hubView==='private'?pagesIn('private'):[];
+  $('#list').innerHTML=pages.map(p=>{
     const m=makers[p.maker]||{ko:p.maker,color:'var(--lilac)'};
     const st=statuses[p.id]||{};
     const live=st.live; const led=live===true?'var(--ok)':live===false?'var(--bad)':'var(--unk)';
@@ -393,18 +459,21 @@ function renderCards(){
       </div>
     </article>`;
   }).join('');
-  const known=Object.values(statuses).filter(s=>s.live===true||s.live===false);
+  const visible=pages;
+  const known=visible.map(p=>statuses[p.id]).filter(s=>s&&(s.live===true||s.live===false));
   const bad=known.filter(s=>s.live===false).length;
-  const allDone=known.length===D.pages.length;
+  const allDone=known.length===visible.length;
   const sum=$('#sum');
+  if(!visible.length){sum.innerHTML='';return}
   if(!allDone){sum.innerHTML=`<span class="dot" style="--c:var(--unk)"></span><span>${esc(t('checkingPages'))}</span>`;return}
-  if(bad===0) sum.innerHTML=`<span class="dot" style="--c:var(--ok)"></span><span>${esc(t('allOk').replace('{n}',D.pages.length))}</span>`;
-  else sum.innerHTML=`<span class="dot" style="--c:var(--bad)"></span><span>${esc(t('someBad').replace('{b}',bad).replace('{g}',D.pages.length-bad))}</span>`;
+  if(bad===0) sum.innerHTML=`<span class="dot" style="--c:var(--ok)"></span><span>${esc(t('allOk').replace('{n}',visible.length))}</span>`;
+  else sum.innerHTML=`<span class="dot" style="--c:var(--bad)"></span><span>${esc(t('someBad').replace('{b}',bad).replace('{g}',visible.length-bad))}</span>`;
 }
 
 async function enrich(){
   renderCards();
-  await Promise.all(D.pages.map(async p=>{
+  const pages=listed();
+  await Promise.all(pages.map(async p=>{
     const [live, updated]=await Promise.all([probe(p.url), lastCommit(p.repo, p.path)]);
     statuses[p.id]={live, updated};
     renderCards();
@@ -421,9 +490,11 @@ function showApp(){
     $('#artBand').style.backgroundImage=`url(${D.art})`;
   }
   if(D.names){const n=$('#namesArt');n.innerHTML=D.names;n.hidden=false}
+  wireIconLinks();
+  const h=(location.hash||'').replace('#','');
+  setHubView(h==='public'||h==='private'?h:'home');
   enrich();
   loadLine();
-  loadCafe();
   /* 우리 집 평면도 → 자매 방 탭 (sessionStorage ouroboros-nk-tab) */
   try{const t=sessionStorage.getItem('ouroboros-nk-tab');if(t){sessionStorage.removeItem('ouroboros-nk-tab');xOpen(t)}}catch(_){}
 }
@@ -437,21 +508,6 @@ async function loadLine(){
     const d=new Date(new Date(L.at).getTime()+KST), tm=el.querySelector('.cl-dt');
     tm.textContent=isNaN(d)?'':`${d.getUTCFullYear()}.${pad(d.getUTCMonth()+1)}.${pad(d.getUTCDate())}`;
     tm.setAttribute('datetime',L.at||'');
-    el.hidden=false;
-  }catch(_){el.hidden=true}
-}
-
-/* 니아의 카페인: 오늘(KST) 합계 + 오늘 한마디만. 오늘 기록·한마디 둘 다 없거나 실패하면 조용히 숨김 */
-async function loadCafe(){
-  const k=unl.get(), el=$('#cafeCard'); if(!k||!el) return;
-  try{
-    const C=await decrypt(k,'cafe.enc.json');
-    const d=new Date(Date.now()+KST), td=`${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}-${pad(d.getUTCDate())}`;
-    const x=(C.days||{})[td];
-    if(!x||(!x.n&&!x.line)){el.hidden=true;return}
-    const mg=el.querySelector('.cf-mg'); mg.textContent=`≈ ${Math.round(x.mg)} / ${C.limit} mg`;
-    mg.style.setProperty('--c',x.mg>C.limit?'#D9534F':x.mg>C.warn?'#E8873A':'#E0B04A');
-    el.querySelector('.cf-tx').textContent=x.line||'';
     el.hidden=false;
   }catch(_){el.hidden=true}
 }
@@ -511,6 +567,10 @@ async function unlock(pv,silent){
 $('#f').onsubmit=e=>{e.preventDefault();if(GATE.locked())return;unlock($('#pw').value.trim().toLowerCase())};
 {const p=unl.get();if(p)unlock(p,true)}
 $('#lock').onclick=()=>{unl.clear();location.reload()};
+$('#tilePublic').onclick=()=>setHubView('public');
+$('#tilePrivate').onclick=()=>setHubView('private');
+$('#hubBack').onclick=()=>setHubView('home');
+addEventListener('hashchange',()=>{if($('#gate').style.display==='none'){const h=(location.hash||'').replace('#','');setHubView(h==='public'||h==='private'?h:'home')}});
 /* 🜸 (footer) — extra view, encrypted, loaded on demand */
 let X=null,xTab=null,xBusy=false;
 const xT=k=>{const U=X&&X.ui||{};return (U[lang]||U.ko||{})[k]??(U.ko||{})[k]??''};
@@ -558,7 +618,7 @@ addEventListener('pagehide',e=>{if(e.persisted&&$('#gate').style.display==='none
 addEventListener('pageshow',e=>{if(e.persisted&&syncLock(true))document.documentElement.style.visibility=''});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')syncLock(false)});
 /* 언어 전환: 바로 적용 (새로고침 없음) */
-function applyLang(){paintGateLang();paintSavings();GATE.relang();if(D)renderCards();if(X&&!$('#nook').hidden)xPaint()}
+function applyLang(){paintGateLang();paintSavings();GATE.relang();if(D){wireIconLinks();renderCards()}if(X&&!$('#nook').hidden)xPaint()}
 function setLang(l){lang=l==='en'?'en':'ko';try{localStorage.setItem(LK,lang)}catch(_){}applyLang()}
 document.querySelectorAll('.lang-sw [data-lang]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.lang!==lang)setLang(b.dataset.lang)}));
 addEventListener('storage',e=>{if(e.key===LK){lang=readLang();applyLang()}});
